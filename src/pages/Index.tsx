@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import { 
   Code2, 
   Hash, 
@@ -32,9 +33,18 @@ import {
   Database,
   Network,
   Sparkles,
-  GitCommit
+  GitCommit,
+  Star,
+  Download,
+  Users,
+  ArrowRight,
+  Github,
+  Twitter,
+  Linkedin,
+  Mail,
+  Filter
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { JsonFormatter } from "@/components/tools/JsonFormatter";
 import { UuidGenerator } from "@/components/tools/UuidGenerator";
 import { Base64Tool } from "@/components/tools/Base64Tool";
@@ -64,6 +74,13 @@ import DnsLookup from "@/components/tools/DnsLookup";
 import LoremIpsumGenerator from "@/components/tools/LoremIpsumGenerator";
 import ColorPaletteGenerator from "@/components/tools/ColorPaletteGenerator";
 import GitCommitGenerator from "@/components/tools/GitCommitGenerator";
+import CurlGenerator from "@/components/tools/CurlGenerator";
+import SubnetCalculator from "@/components/tools/SubnetCalculator";
+import SslChecker from "@/components/tools/SslChecker";
+import CronGenerator from "@/components/tools/CronGenerator";
+import SlugGenerator from "@/components/tools/SlugGenerator";
+import SqlFormatter from "@/components/tools/SqlFormatter";
+import MockDataGenerator from "@/components/tools/MockDataGenerator";
 
 const tools = [
   {
@@ -268,11 +285,191 @@ const tools = [
     description: "Generate conventional commit messages",
     icon: GitCommit,
     category: "Development"
+  },
+  {
+    id: "curl-generator",
+    name: "cURL Command Generator",
+    description: "Generate cURL commands for API testing and debugging",
+    icon: Send,
+    category: "Network"
+  },
+  {
+    id: "subnet-calculator",
+    name: "Subnet Calculator",
+    description: "Calculate network information and subnet masks",
+    icon: Network,
+    category: "Network"
+  },
+  {
+    id: "ssl-checker",
+    name: "SSL/TLS Checker",
+    description: "Check SSL certificate validity and security grade",
+    icon: Shield,
+    category: "Network"
+  },
+  {
+    id: "cron-generator",
+    name: "Cron Expression Generator",
+    description: "Generate and validate cron expressions with visual interface",
+    icon: Clock,
+    category: "Development"
+  },
+  {
+    id: "slug-generator",
+    name: "Slug Generator",
+    description: "Generate URL-friendly slugs from any text",
+    icon: Hash,
+    category: "Text"
+  },
+  {
+    id: "sql-formatter",
+    name: "SQL Formatter",
+    description: "Format, validate and minify SQL queries with statistics",
+    icon: Database,
+    category: "Text"
+  },
+  {
+    id: "mock-data-generator",
+    name: "Mock Data Generator",
+    description: "Generate fake names, emails, addresses, phones and more",
+    icon: Users,
+    category: "Generator"
   }
 ];
 
+const categories = ["All", ...Array.from(new Set(tools.map(tool => tool.category)))];
+
+// Cookie management functions
+const setCookie = (name: string, value: string, days: number = 365) => {
+  const expires = new Date();
+  expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+  document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
+};
+
+const getCookie = (name: string): string | null => {
+  const nameEQ = name + "=";
+  const ca = document.cookie.split(';');
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+  }
+  return null;
+};
+
 const Index = () => {
   const [selectedTool, setSelectedTool] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [hasVisitedBefore, setHasVisitedBefore] = useState<boolean>(false);
+  const [showWelcomeMessage, setShowWelcomeMessage] = useState<boolean>(false);
+  const [hasScrolledInSession, setHasScrolledInSession] = useState<boolean>(false);
+  const toolsSectionRef = useRef<HTMLElement>(null);
+
+  const filteredTools = useMemo(() => {
+    return tools.filter(tool => {
+      const matchesSearch = tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                           tool.description.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesCategory = selectedCategory === "All" || tool.category === selectedCategory;
+      return matchesSearch && matchesCategory;
+    });
+  }, [searchQuery, selectedCategory]);
+
+  // Add smooth scroll CSS to the document (only once)
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      html {
+        scroll-behavior: smooth;
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        html {
+          scroll-behavior: smooth;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Cleanup function to remove the style when component unmounts
+    return () => {
+      if (document.head.contains(style)) {
+        document.head.removeChild(style);
+      }
+    };
+  }, []);
+
+  // Handle visit tracking and scroll animation (only on main page and only once per session)
+  useEffect(() => {
+    // Only trigger scroll animation when on the main page (no tool selected) and haven't scrolled in this session
+    if (selectedTool !== null || hasScrolledInSession) {
+      return;
+    }
+
+    const visitCookie = getCookie('devtools_visited');
+    
+    if (visitCookie === 'true') {
+      // User has visited before, scroll to tools section
+      setHasVisitedBefore(true);
+      setHasScrolledInSession(true); // Mark that we've scrolled in this session
+      
+      // Small delay to ensure the page is fully loaded
+      setTimeout(() => {
+        if (toolsSectionRef.current) {
+          // Enhanced smooth scroll with better browser support
+          const element = toolsSectionRef.current;
+          const elementPosition = element.offsetTop;
+          const offsetPosition = elementPosition - 20; // Small offset from top
+
+          // Try native smooth scroll first
+          if ('scrollBehavior' in document.documentElement.style) {
+            element.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start',
+              inline: 'nearest'
+            });
+          } else {
+            // Fallback for older browsers
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: 'smooth'
+            });
+          }
+          
+          // Show welcome message after scroll animation
+          setTimeout(() => {
+            setShowWelcomeMessage(true);
+          }, 1200);
+        }
+      }, 300);
+    } else {
+      // First visit, set the cookie
+      setCookie('devtools_visited', 'true', 365);
+      setHasVisitedBefore(false);
+    }
+  }, [selectedTool, hasScrolledInSession]); // Add hasScrolledInSession as dependency
+
+  // Scroll to top when accessing a tool
+  useEffect(() => {
+    if (selectedTool !== null) {
+      // Scroll to top when a tool is selected with delay for mobile
+      setTimeout(() => {
+        // Force scroll to top, especially important for mobile
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: 'smooth'
+        });
+        
+        // Additional fallback for mobile devices
+        setTimeout(() => {
+          // Try multiple methods to ensure scroll to top works on all devices
+          window.scrollTo(0, 0);
+          document.documentElement.scrollTop = 0;
+          document.body.scrollTop = 0;
+        }, 100);
+      }, 200);
+    }
+  }, [selectedTool]);
 
   const renderTool = () => {
     switch (selectedTool) {
@@ -334,6 +531,20 @@ const Index = () => {
         return <ColorPaletteGenerator />;
       case "git-commit-generator":
         return <GitCommitGenerator />;
+      case "curl-generator":
+        return <CurlGenerator />;
+      case "subnet-calculator":
+        return <SubnetCalculator />;
+      case "ssl-checker":
+        return <SslChecker />;
+      case "cron-generator":
+        return <CronGenerator />;
+      case "slug-generator":
+        return <SlugGenerator />;
+      case "sql-formatter":
+        return <SqlFormatter />;
+      case "mock-data-generator":
+        return <MockDataGenerator />;
       default:
         return null;
     }
@@ -348,7 +559,19 @@ const Index = () => {
               <div className="flex items-center gap-4">
                 <Button
                   variant="ghost"
-                  onClick={() => setSelectedTool(null)}
+                  onClick={() => {
+                    setSelectedTool(null);
+                    // Scroll to Developer Tools section after a small delay
+                    setTimeout(() => {
+                      if (toolsSectionRef.current) {
+                        toolsSectionRef.current.scrollIntoView({
+                          behavior: 'smooth',
+                          block: 'start',
+                          inline: 'nearest'
+                        });
+                      }
+                    }, 100);
+                  }}
                   className="text-muted-foreground hover:text-foreground"
                 >
                   ← Back to Tools
@@ -370,77 +593,324 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b border-border bg-card">
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <Code2 className="h-8 w-8 text-primary" />
-              <h1 className="text-4xl font-bold">DevTools Hub</h1>
+      {/* Hero Section with Stunning Background */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Animated Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-primary/10">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/30 via-transparent to-transparent opacity-40"></div>
+          <div className="absolute top-0 left-0 w-full h-full">
+            <div className="absolute top-20 left-20 w-72 h-72 bg-primary/20 rounded-full blur-3xl animate-pulse"></div>
+            <div className="absolute bottom-20 right-20 w-96 h-96 bg-primary/15 rounded-full blur-3xl animate-pulse delay-1000"></div>
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary/10 rounded-full blur-3xl animate-pulse delay-500"></div>
+          </div>
+        </div>
+
+        {/* Hero Content */}
+        <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
+          <div className="flex items-center justify-center gap-4 mb-8">
+            <div className="p-3 rounded-2xl bg-primary/10 border border-primary/20">
+              <Code2 className="h-12 w-12 text-primary" />
             </div>
+            <h1 className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+              DevTools Hub
+            </h1>
+          </div>
+          
+          <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
+            The ultimate collection of developer tools for modern web development. 
+            <span className="text-primary font-semibold"> Fast, secure, and works offline</span>.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+            <Button size="lg" className="text-lg px-8 py-6 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300">
+              <Star className="mr-2 h-5 w-5" />
+              Explore Tools
+            </Button>
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="text-lg px-8 py-6 rounded-xl border-primary/50 hover:bg-primary/10 hover:border-primary transition-all duration-300"
+              onClick={() => window.open('https://github.com/hemelo/dev-tools', '_blank')}
+            >
+              <Github className="mr-2 h-5 w-5" />
+              View GitHub
+            </Button>
+          </div>
+
+          {/* Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-primary mb-2">{tools.length}+</div>
+              <div className="text-sm text-muted-foreground">Developer Tools</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-primary mb-2">100%</div>
+              <div className="text-sm text-muted-foreground">Offline First</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-primary mb-2">Free</div>
+              <div className="text-sm text-muted-foreground">Forever</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <ArrowRight className="h-6 w-6 text-primary rotate-90" />
+        </div>
+      </section>
+
+      {/* Benefits Section */}
+      <section className="py-20 bg-gradient-to-b from-background to-card/50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold mb-4">Why Choose DevTools Hub?</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Essential developer tools for everyday coding tasks. Fast, secure, and works offline.
+              Built by developers, for developers. Experience the difference with our comprehensive tool suite.
             </p>
           </div>
-        </div>
-      </header>
 
-      <main className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {tools.map((tool) => {
-            const IconComponent = tool.icon;
-            return (
-              <Card 
-                key={tool.id} 
-                className="hover:shadow-lg transition-all duration-200 cursor-pointer hover:border-primary/50 group"
-                onClick={() => setSelectedTool(tool.id)}
-              >
-                <CardHeader>
-                  <div className="flex items-start justify-between mb-2">
-                    <IconComponent className="h-8 w-8 text-primary group-hover:scale-110 transition-all duration-200" />
-                    <Badge variant="secondary" className="text-xs">
-                      {tool.category}
-                    </Badge>
-                  </div>
-                  <CardTitle className="group-hover:text-primary transition-colors">
-                    {tool.name}
-                  </CardTitle>
-                  <CardDescription>
-                    {tool.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button variant="outline" className="w-full group-hover:border-primary group-hover:text-primary">
-                    Open Tool
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <Card className="text-center p-8 hover:shadow-xl transition-all duration-300 hover:border-primary/50 group">
+              <div className="p-4 rounded-full bg-primary/10 w-fit mx-auto mb-6 group-hover:bg-primary/20 transition-colors">
+                <Globe className="h-8 w-8 text-primary" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Works Offline</h3>
+              <p className="text-muted-foreground">All processing happens locally in your browser. No internet required.</p>
+            </Card>
+
+            <Card className="text-center p-8 hover:shadow-xl transition-all duration-300 hover:border-primary/50 group">
+              <div className="p-4 rounded-full bg-primary/10 w-fit mx-auto mb-6 group-hover:bg-primary/20 transition-colors">
+                <Shield className="h-8 w-8 text-primary" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Privacy First</h3>
+              <p className="text-muted-foreground">Your data never leaves your browser. Complete privacy guaranteed.</p>
+            </Card>
+
+            <Card className="text-center p-8 hover:shadow-xl transition-all duration-300 hover:border-primary/50 group">
+              <div className="p-4 rounded-full bg-primary/10 w-fit mx-auto mb-6 group-hover:bg-primary/20 transition-colors">
+                <Zap className="h-8 w-8 text-primary" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Lightning Fast</h3>
+              <p className="text-muted-foreground">Optimized for speed. Get results instantly without any delays.</p>
+            </Card>
+
+            <Card className="text-center p-8 hover:shadow-xl transition-all duration-300 hover:border-primary/50 group">
+              <div className="p-4 rounded-full bg-primary/10 w-fit mx-auto mb-6 group-hover:bg-primary/20 transition-colors">
+                <Users className="h-8 w-8 text-primary" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3">Community Driven</h3>
+              <p className="text-muted-foreground">Built by developers, for developers. Open source and always improving.</p>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Tools Section */}
+      <section ref={toolsSectionRef} className="py-20 bg-gradient-to-b from-card/50 to-background">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold mb-4">Developer Tools</h2>
+            {showWelcomeMessage && (
+              <div className="mb-4 animate-in fade-in duration-500">
+                <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
+                  Welcome back! 🎉
+                </Badge>
+              </div>
+            )}
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+              Everything you need for modern development in one place
+            </p>
+
+            {/* Search and Filter */}
+            <div className="max-w-2xl mx-auto mb-8">
+              <div className="relative mb-4">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <Input
+                  placeholder="Search tools..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 pr-4 py-3 text-lg rounded-xl border-primary/20 focus:border-primary"
+                />
+              </div>
+              
+              <div className="flex flex-wrap gap-2 justify-center">
+                {categories.map((category) => (
+                  <Button
+                    key={category}
+                    variant={selectedCategory === category ? "default" : "outline"}
+                    onClick={() => setSelectedCategory(category)}
+                    className="rounded-full"
+                  >
+                    {category}
                   </Button>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-
-        <div className="mt-16 text-center">
-          <div className="max-w-2xl mx-auto">
-            <h2 className="text-2xl font-semibold mb-4">Why DevTools Hub?</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
-              <div className="flex flex-col items-center gap-2">
-                <Globe className="h-6 w-6 text-primary" />
-                <span className="font-medium">Works Offline</span>
-                <span className="text-muted-foreground">All processing happens locally</span>
-              </div>
-              <div className="flex flex-col items-center gap-2">
-                <Lock className="h-6 w-6 text-primary" />
-                <span className="font-medium">Privacy First</span>
-                <span className="text-muted-foreground">Your data never leaves your browser</span>
-              </div>
-              <div className="flex flex-col items-center gap-2">
-                <FileText className="h-6 w-6 text-primary" />
-                <span className="font-medium">No Sign-up</span>
-                <span className="text-muted-foreground">Free to use, no registration required</span>
+                ))}
               </div>
             </div>
           </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredTools.map((tool) => {
+              const IconComponent = tool.icon;
+              return (
+                <Card 
+                  key={tool.id} 
+                  className="hover:shadow-xl transition-all duration-300 cursor-pointer hover:border-primary/50 group hover:-translate-y-1"
+                  onClick={() => setSelectedTool(tool.id)}
+                >
+                  <CardHeader>
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="p-3 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                        <IconComponent className="h-6 w-6 text-primary group-hover:scale-110 transition-all duration-200" />
+                      </div>
+                      <Badge variant="secondary" className="text-xs">
+                        {tool.category}
+                      </Badge>
+                    </div>
+                    <CardTitle className="group-hover:text-primary transition-colors text-lg">
+                      {tool.name}
+                    </CardTitle>
+                    <CardDescription className="text-sm">
+                      {tool.description}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Button variant="outline" className="w-full group-hover:border-primary group-hover:text-primary group-hover:bg-primary/5 transition-all duration-200">
+                      <ArrowRight className="mr-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                      Open Tool
+                    </Button>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+
+          {filteredTools.length === 0 && (
+            <div className="text-center py-12">
+              <div className="p-4 rounded-full bg-muted w-fit mx-auto mb-4">
+                <Search className="h-8 w-8 text-muted-foreground" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">No tools found</h3>
+              <p className="text-muted-foreground">Try adjusting your search or filter criteria</p>
+            </div>
+          )}
         </div>
-      </main>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-card border-t border-border py-16">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <div className="md:col-span-2">
+              <div className="flex items-center gap-3 mb-4">
+                <Code2 className="h-8 w-8 text-primary" />
+                <h3 className="text-2xl font-bold">DevTools Hub</h3>
+              </div>
+              <p className="text-muted-foreground mb-6 max-w-md">
+                The ultimate collection of developer tools for modern web development. 
+                Built with ❤️ by developers who understand your needs.
+              </p>
+              <div className="flex gap-4 flex-wrap">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="rounded-full hover:bg-primary/10 hover:border-primary transition-all duration-200"
+                  onClick={() => window.open('https://github.com/hemelo/dev-tools', '_blank')}
+                >
+                  <Github className="h-4 w-4 mr-2" />
+                  GitHub
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="rounded-full hover:bg-primary/10 hover:border-primary transition-all duration-200"
+                  onClick={() => window.open('https://x.com/hemelodev', '_blank')}
+                >
+                  <Twitter className="h-4 w-4 mr-2" />
+                  Twitter
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="rounded-full hover:bg-primary/10 hover:border-primary transition-all duration-200"
+                  onClick={() => window.open('https://www.linkedin.com/in/henriquefcmelo/', '_blank')}
+                >
+                  <Linkedin className="h-4 w-4 mr-2" />
+                  LinkedIn
+                </Button>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-4">Tools</h4>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><a href="#" className="hover:text-primary transition-colors">JSON Tools</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors">Cryptography</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors">Web Development</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors">Data Analysis</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-4">Developer</h4>
+              <div className="space-y-3 text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <Github className="h-4 w-4" />
+                  <a 
+                    href="https://github.com/hemelo" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="hover:text-primary transition-colors cursor-pointer"
+                  >
+                    @hemelo
+                  </a>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Twitter className="h-4 w-4" />
+                  <a 
+                    href="https://x.com/hemelodev" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="hover:text-primary transition-colors cursor-pointer"
+                  >
+                    @hemelodev
+                  </a>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Linkedin className="h-4 w-4" />
+                  <a 
+                    href="https://www.linkedin.com/in/henriquefcmelo/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="hover:text-primary transition-colors cursor-pointer"
+                  >
+                    LinkedIn Profile
+                  </a>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Github className="h-4 w-4" />
+                  <a 
+                    href="https://github.com/hemelo/dev-tools" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="hover:text-primary transition-colors cursor-pointer"
+                  >
+                    dev-tools repository
+                  </a>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Code2 className="h-4 w-4" />
+                  <span>Full Stack Developer</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t border-border pt-8 text-center text-sm text-muted-foreground">
+            <p>&copy; 2025 DevTools Hub by <a href="https://github.com/hemelo" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">@hemelo</a>. Built with React, TypeScript, and Tailwind CSS. Open source and free forever.</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };

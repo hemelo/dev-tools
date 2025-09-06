@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Copy, Check, Key, AlertCircle } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Copy, Check, Key, AlertCircle, Shield, Clock, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export const JwtTool = () => {
@@ -95,11 +96,13 @@ export const JwtTool = () => {
     return new Date(timestamp * 1000).toLocaleString();
   };
 
-  const getExampleToken = () => {
-    // This is a sample JWT token for demonstration (expired)
-    const exampleJwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE1MTYyNDI2MjJ9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
-    setJwtToken(exampleJwt);
-    decodeJwt();
+  const loadExample = (example: string) => {
+    setJwtToken(example);
+    setDecodedHeader("");
+    setDecodedPayload("");
+    setSignature("");
+    setIsValid(null);
+    setError("");
   };
 
   return (
@@ -127,10 +130,8 @@ export const JwtTool = () => {
           />
           <div className="flex gap-4">
             <Button onClick={decodeJwt} disabled={!jwtToken.trim()}>
+              <Key className="h-4 w-4 mr-2" />
               Decode JWT
-            </Button>
-            <Button variant="outline" onClick={getExampleToken}>
-              Load Example
             </Button>
             <Button variant="outline" onClick={clearAll}>
               Clear
@@ -243,12 +244,112 @@ export const JwtTool = () => {
         </Card>
       )}
 
+      {/* Quick Examples */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Quick Examples</CardTitle>
+          <CardDescription>Click on any example to load it</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <User className="h-4 w-4 text-blue-600" />
+                <Label className="text-sm font-medium">Basic JWT</Label>
+              </div>
+              <div className="space-y-1">
+                {[
+                  { 
+                    jwt: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE1MTYyNDI2MjJ9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c", 
+                    desc: "Standard User Token" 
+                  },
+                  { 
+                    jwt: "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2V4YW1wbGUuY29tIiwic3ViIjoiMTIzNDU2Nzg5MCIsImF1ZCI6Im15YXBwIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE1MTYyNDI2MjJ9.EkN-DOsnsuRjRO6BxXemmJDm3HbxrbRzXglbN2S4sOkopdU4IsDxTI8jO19W_A4K8ZPJijNLtr4gn4pG1MhsA", 
+                    desc: "RSA Signed Token" 
+                  }
+                ].map((example, index) => (
+                  <Button
+                    key={index}
+                    variant="outline"
+                    size="sm"
+                    onClick={() => loadExample(example.jwt)}
+                    className="w-full justify-start text-xs font-mono"
+                  >
+                    {example.desc}
+                  </Button>
+                ))}
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Shield className="h-4 w-4 text-green-600" />
+                <Label className="text-sm font-medium">API Tokens</Label>
+              </div>
+              <div className="space-y-1">
+                {[
+                  { 
+                    jwt: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMjMsInJvbGUiOiJhZG1pbiIsInBlcm1pc3Npb25zIjpbInJlYWQiLCJ3cml0ZSIsImRlbGV0ZSJdLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MTUxNjI0MjYyMn0.abc123def456ghi789jkl012mno345pqr678stu901vwx234yz", 
+                    desc: "Admin Token" 
+                  },
+                  { 
+                    jwt: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5IjoiYWJjZGVmZ2hpaiIsInNjb3BlcyI6WyJyZWFkIiwid3JpdGUiXSwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE1MTYyNDI2MjJ9.xyz789abc123def456ghi789jkl012mno345pqr678stu901vwx", 
+                    desc: "API Key Token" 
+                  }
+                ].map((example, index) => (
+                  <Button
+                    key={index}
+                    variant="outline"
+                    size="sm"
+                    onClick={() => loadExample(example.jwt)}
+                    className="w-full justify-start text-xs font-mono"
+                  >
+                    {example.desc}
+                  </Button>
+                ))}
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Clock className="h-4 w-4 text-orange-600" />
+                <Label className="text-sm font-medium">Time-based</Label>
+              </div>
+              <div className="space-y-1">
+                {[
+                  { 
+                    jwt: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE3MDAwMDAwMDB9.invalid_signature_for_demo", 
+                    desc: "Future Expiration" 
+                  },
+                  { 
+                    jwt: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJuYmYiOjE3MDAwMDAwMDB9.invalid_signature_for_demo", 
+                    desc: "Not Before Time" 
+                  }
+                ].map((example, index) => (
+                  <Button
+                    key={index}
+                    variant="outline"
+                    size="sm"
+                    onClick={() => loadExample(example.jwt)}
+                    className="w-full justify-start text-xs font-mono"
+                  >
+                    {example.desc}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* JWT Information */}
       <Card>
         <CardHeader>
           <CardTitle>About JWT Tokens</CardTitle>
+          <CardDescription>Understanding JWT structure and common claims</CardDescription>
         </CardHeader>
         <CardContent className="space-y-3 text-sm text-muted-foreground">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <h4 className="font-medium text-foreground mb-2">Structure:</h4>
               <ul className="space-y-1">
@@ -268,6 +369,19 @@ export const JwtTool = () => {
                 <li>• <strong>iat:</strong> Issued at</li>
                 <li>• <strong>nbf:</strong> Not before</li>
               </ul>
+            </div>
+          </div>
+          
+          <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+            <div className="flex items-start gap-2">
+              <Shield className="h-4 w-4 text-blue-600 dark:text-blue-400 mt-0.5" />
+              <div className="text-sm">
+                <p className="font-medium text-blue-900 dark:text-blue-100 mb-1">Security Note</p>
+                <p className="text-blue-700 dark:text-blue-300">
+                  This tool only decodes JWT tokens for inspection. It does not verify signatures or validate tokens against a secret key. 
+                  Always verify tokens properly in production environments.
+                </p>
+              </div>
             </div>
           </div>
         </CardContent>

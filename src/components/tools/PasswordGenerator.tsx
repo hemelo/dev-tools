@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
-import { Copy, Check, RefreshCw, Shield } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Copy, Check, RefreshCw, Shield, Key, Lock, User, Zap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export const PasswordGenerator = () => {
@@ -162,6 +163,23 @@ export const PasswordGenerator = () => {
 
   const strength = calculateStrength(password);
 
+  const loadPreset = (preset: {
+    length: number;
+    uppercase: boolean;
+    lowercase: boolean;
+    numbers: boolean;
+    symbols: boolean;
+    excludeSimilar: boolean;
+  }) => {
+    setLength([preset.length]);
+    setIncludeUppercase(preset.uppercase);
+    setIncludeLowercase(preset.lowercase);
+    setIncludeNumbers(preset.numbers);
+    setIncludeSymbols(preset.symbols);
+    setExcludeSimilar(preset.excludeSimilar);
+    setPassword(""); // Clear current password
+  };
+
   return (
     <div className="space-y-6">
       <div>
@@ -318,12 +336,181 @@ export const PasswordGenerator = () => {
         </CardContent>
       </Card>
 
+      {/* Quick Presets */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Quick Presets</CardTitle>
+          <CardDescription>Click on any preset to configure password settings</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <User className="h-4 w-4 text-blue-600" />
+                <Label className="text-sm font-medium">Basic</Label>
+              </div>
+              <div className="space-y-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => loadPreset({
+                    length: 12,
+                    uppercase: true,
+                    lowercase: true,
+                    numbers: true,
+                    symbols: false,
+                    excludeSimilar: false
+                  })}
+                  className="w-full justify-start text-xs"
+                >
+                  Standard (12 chars)
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => loadPreset({
+                    length: 8,
+                    uppercase: true,
+                    lowercase: true,
+                    numbers: true,
+                    symbols: false,
+                    excludeSimilar: true
+                  })}
+                  className="w-full justify-start text-xs"
+                >
+                  Simple (8 chars)
+                </Button>
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Shield className="h-4 w-4 text-green-600" />
+                <Label className="text-sm font-medium">Secure</Label>
+              </div>
+              <div className="space-y-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => loadPreset({
+                    length: 16,
+                    uppercase: true,
+                    lowercase: true,
+                    numbers: true,
+                    symbols: true,
+                    excludeSimilar: false
+                  })}
+                  className="w-full justify-start text-xs"
+                >
+                  Strong (16 chars)
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => loadPreset({
+                    length: 20,
+                    uppercase: true,
+                    lowercase: true,
+                    numbers: true,
+                    symbols: true,
+                    excludeSimilar: true
+                  })}
+                  className="w-full justify-start text-xs"
+                >
+                  Very Strong (20 chars)
+                </Button>
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Key className="h-4 w-4 text-purple-600" />
+                <Label className="text-sm font-medium">Special</Label>
+              </div>
+              <div className="space-y-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => loadPreset({
+                    length: 32,
+                    uppercase: true,
+                    lowercase: true,
+                    numbers: true,
+                    symbols: true,
+                    excludeSimilar: false
+                  })}
+                  className="w-full justify-start text-xs"
+                >
+                  API Key (32 chars)
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => loadPreset({
+                    length: 64,
+                    uppercase: true,
+                    lowercase: true,
+                    numbers: true,
+                    symbols: true,
+                    excludeSimilar: false
+                  })}
+                  className="w-full justify-start text-xs"
+                >
+                  Master Key (64 chars)
+                </Button>
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Lock className="h-4 w-4 text-orange-600" />
+                <Label className="text-sm font-medium">Restricted</Label>
+              </div>
+              <div className="space-y-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => loadPreset({
+                    length: 10,
+                    uppercase: true,
+                    lowercase: true,
+                    numbers: true,
+                    symbols: false,
+                    excludeSimilar: true
+                  })}
+                  className="w-full justify-start text-xs"
+                >
+                  Alphanumeric Only
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => loadPreset({
+                    length: 6,
+                    uppercase: false,
+                    lowercase: false,
+                    numbers: true,
+                    symbols: false,
+                    excludeSimilar: true
+                  })}
+                  className="w-full justify-start text-xs"
+                >
+                  PIN (Numbers Only)
+                </Button>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Password Security Tips */}
       <Card>
         <CardHeader>
           <CardTitle>Password Security Tips</CardTitle>
+          <CardDescription>Best practices for creating and managing secure passwords</CardDescription>
         </CardHeader>
         <CardContent className="space-y-3 text-sm text-muted-foreground">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <h4 className="font-medium text-foreground mb-2">Strong Passwords:</h4>
               <ul className="space-y-1">
@@ -331,6 +518,7 @@ export const PasswordGenerator = () => {
                 <li>• Mix of uppercase and lowercase</li>
                 <li>• Include numbers and symbols</li>
                 <li>• Avoid dictionary words</li>
+                <li>• No personal information</li>
               </ul>
             </div>
             <div>
@@ -340,7 +528,21 @@ export const PasswordGenerator = () => {
                 <li>• Store in a password manager</li>
                 <li>• Enable two-factor authentication</li>
                 <li>• Never share passwords</li>
+                <li>• Change passwords regularly</li>
               </ul>
+            </div>
+          </div>
+          
+          <div className="mt-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+            <div className="flex items-start gap-2">
+              <Zap className="h-4 w-4 text-green-600 dark:text-green-400 mt-0.5" />
+              <div className="text-sm">
+                <p className="font-medium text-green-900 dark:text-green-100 mb-1">Pro Tip</p>
+                <p className="text-green-700 dark:text-green-300">
+                  Use the "Very Strong" preset for important accounts like banking, email, and social media. 
+                  For less critical accounts, the "Strong" preset provides good security with easier memorization.
+                </p>
+              </div>
             </div>
           </div>
         </CardContent>

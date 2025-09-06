@@ -3,7 +3,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Copy, Check, ArrowUpDown } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Copy, Check, ArrowUpDown, FileText, Code, Image } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export const Base64Tool = () => {
@@ -61,6 +62,11 @@ export const Base64Tool = () => {
         variant: "destructive",
       });
     }
+  };
+
+  const loadExample = (example: string) => {
+    setInput(example);
+    setOutput("");
   };
 
   const clearAll = () => {
@@ -242,22 +248,143 @@ export const Base64Tool = () => {
         </TabsContent>
       </Tabs>
 
+      {/* Quick Examples */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Quick Examples</CardTitle>
+          <CardDescription>Click on any example to load it</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <FileText className="h-4 w-4 text-blue-600" />
+                <Label className="text-sm font-medium">Text Examples</Label>
+              </div>
+              <div className="space-y-1">
+                {[
+                  { text: "Hello World!", desc: "Simple Text" },
+                  { text: "user@example.com", desc: "Email Address" },
+                  { text: "Special chars: !@#$%^&*()", desc: "Special Characters" },
+                  { text: "Unicode: 你好世界 🌍", desc: "Unicode Text" }
+                ].map((example, index) => (
+                  <Button
+                    key={index}
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      loadExample(example.text);
+                      setActiveTab("encode");
+                    }}
+                    className="w-full justify-start text-xs"
+                  >
+                    {example.desc}
+                  </Button>
+                ))}
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Code className="h-4 w-4 text-green-600" />
+                <Label className="text-sm font-medium">Base64 Examples</Label>
+              </div>
+              <div className="space-y-1">
+                {[
+                  { base64: "SGVsbG8gV29ybGQh", desc: "Hello World!" },
+                  { base64: "dXNlckBleGFtcGxlLmNvbQ==", desc: "Email Address" },
+                  { base64: "U3BlY2lhbCBjaGFyczogIUAjJCVeJiooKQ==", desc: "Special Chars" },
+                  { base64: "VW5pY29kZTog5L2g5aW95LiW55WMIPCfpI0=", desc: "Unicode Text" }
+                ].map((example, index) => (
+                  <Button
+                    key={index}
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      loadExample(example.base64);
+                      setActiveTab("decode");
+                    }}
+                    className="w-full justify-start text-xs font-mono"
+                  >
+                    {example.desc}
+                  </Button>
+                ))}
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Image className="h-4 w-4 text-purple-600" />
+                <Label className="text-sm font-medium">Common Uses</Label>
+              </div>
+              <div className="space-y-1">
+                {[
+                  { text: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==", desc: "1x1 PNG Image" },
+                  { text: "eyJ1c2VyIjoiSm9obiIsImFnZSI6MzB9", desc: "JSON Data" },
+                  { text: "PHNjcmlwdD5hbGVydCgnSGVsbG8nKTwvc2NyaXB0Pg==", desc: "HTML Script" },
+                  { text: "LS0tCmlkOiAxCm5hbWU6IEpvaG4KLS0t", desc: "YAML Data" }
+                ].map((example, index) => (
+                  <Button
+                    key={index}
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      loadExample(example.text);
+                      setActiveTab("decode");
+                    }}
+                    className="w-full justify-start text-xs"
+                  >
+                    {example.desc}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Base64 Information */}
       <Card>
         <CardHeader>
           <CardTitle>About Base64</CardTitle>
+          <CardDescription>Understanding Base64 encoding and its applications</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-2 text-sm text-muted-foreground">
-          <p>
-            <strong>Base64</strong> is a binary-to-text encoding scheme that represents binary data 
-            in ASCII string format using 64 printable characters.
-          </p>
-          <p>
-            Common use cases include encoding binary data for transmission over text-based protocols, 
-            embedding images in HTML/CSS, and storing binary data in JSON or XML.
-          </p>
-          <p>
-            Base64 encoded data is approximately 33% larger than the original binary data.
-          </p>
+        <CardContent className="space-y-3 text-sm text-muted-foreground">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h4 className="font-medium text-foreground mb-2">What is Base64?</h4>
+              <ul className="space-y-1">
+                <li>• Binary-to-text encoding scheme</li>
+                <li>• Uses 64 printable ASCII characters</li>
+                <li>• Characters: A-Z, a-z, 0-9, +, /</li>
+                <li>• Padding with = for proper length</li>
+                <li>• ~33% size increase over binary</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-medium text-foreground mb-2">Common Use Cases:</h4>
+              <ul className="space-y-1">
+                <li>• Email attachments (MIME)</li>
+                <li>• Data URLs in HTML/CSS</li>
+                <li>• JSON/XML binary data</li>
+                <li>• HTTP Basic Authentication</li>
+                <li>• Image embedding in web pages</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+            <div className="flex items-start gap-2">
+              <Code className="h-4 w-4 text-blue-600 dark:text-blue-400 mt-0.5" />
+              <div className="text-sm">
+                <p className="font-medium text-blue-900 dark:text-blue-100 mb-1">Encoding Process</p>
+                <p className="text-blue-700 dark:text-blue-300">
+                  Base64 converts every 3 bytes (24 bits) of binary data into 4 Base64 characters (6 bits each). 
+                  This ensures safe transmission over text-based protocols.
+                </p>
+              </div>
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>

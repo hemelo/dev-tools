@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Copy, Check, AlertCircle, CheckCircle, ArrowRightLeft } from "lucide-react";
+import { Copy, Check, AlertCircle, CheckCircle, ArrowRightLeft, FileText, Table } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export const CsvJsonConverter = () => {
@@ -129,6 +129,13 @@ export const CsvJsonConverter = () => {
         variant: "destructive",
       });
     }
+  };
+
+  const loadExample = (example: string) => {
+    setInput(example);
+    setOutput("");
+    setIsValid(null);
+    setError("");
   };
 
   const clearAll = () => {
@@ -307,6 +314,142 @@ export const CsvJsonConverter = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Quick Examples */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Quick Examples</CardTitle>
+          <CardDescription>Click on any example to load it</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <Table className="h-5 w-5 text-blue-600" />
+                <h4 className="font-medium">CSV Examples</h4>
+              </div>
+              <div className="space-y-2">
+                {[
+                  { 
+                    csv: 'name,age,city\n"John Doe",30,"New York"\n"Jane Smith",25,"Los Angeles"\n"Bob Johnson",35,"Chicago"', 
+                    desc: "Basic CSV with Headers" 
+                  },
+                  { 
+                    csv: 'product;price;category\n"Laptop";999.99;"Electronics"\n"Book";19.99;"Education"\n"Coffee";4.99;"Food"', 
+                    desc: "Semicolon Delimited" 
+                  },
+                  { 
+                    csv: 'id\tname\temail\n1\tAlice\talice@example.com\n2\tBob\tbob@example.com', 
+                    desc: "Tab Delimited" 
+                  },
+                  { 
+                    csv: 'name|department|salary\n"John Smith"|"Engineering"|75000\n"Sarah Davis"|"Marketing"|65000', 
+                    desc: "Pipe Delimited" 
+                  }
+                ].map((example, index) => (
+                  <Button
+                    key={index}
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      loadExample(example.csv);
+                      setConversionType("csv-to-json");
+                    }}
+                    className="w-full justify-start text-xs font-mono"
+                  >
+                    {example.desc}
+                  </Button>
+                ))}
+              </div>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <FileText className="h-5 w-5 text-green-600" />
+                <h4 className="font-medium">JSON Examples</h4>
+              </div>
+              <div className="space-y-2">
+                {[
+                  { 
+                    json: '[{"name": "John Doe", "age": 30, "city": "New York"}, {"name": "Jane Smith", "age": 25, "city": "Los Angeles"}]', 
+                    desc: "Simple Object Array" 
+                  },
+                  { 
+                    json: '[{"product": "Laptop", "price": 999.99, "inStock": true}, {"product": "Mouse", "price": 29.99, "inStock": false}]', 
+                    desc: "Mixed Data Types" 
+                  },
+                  { 
+                    json: '[{"id": 1, "user": {"name": "Alice", "email": "alice@example.com"}}, {"id": 2, "user": {"name": "Bob", "email": "bob@example.com"}}]', 
+                    desc: "Nested Objects" 
+                  },
+                  { 
+                    json: '[{"date": "2024-01-15", "sales": 1500, "region": "North"}, {"date": "2024-01-16", "sales": 2300, "region": "South"}]', 
+                    desc: "Date and Numbers" 
+                  }
+                ].map((example, index) => (
+                  <Button
+                    key={index}
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      loadExample(example.json);
+                      setConversionType("json-to-csv");
+                    }}
+                    className="w-full justify-start text-xs font-mono"
+                  >
+                    {example.desc}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* CSV/JSON Tips */}
+      <Card>
+        <CardHeader>
+          <CardTitle>CSV/JSON Conversion Tips</CardTitle>
+          <CardDescription>Best practices for data conversion</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-3">
+              <h4 className="font-medium">CSV Formatting</h4>
+              <ul className="text-sm text-muted-foreground space-y-1">
+                <li>• Use consistent delimiters throughout the file</li>
+                <li>• Quote fields containing special characters or spaces</li>
+                <li>• Include headers in the first row for better JSON structure</li>
+                <li>• Handle empty fields appropriately</li>
+                <li>• Use proper encoding (UTF-8) for international characters</li>
+              </ul>
+            </div>
+            <div className="space-y-3">
+              <h4 className="font-medium">JSON Structure</h4>
+              <ul className="text-sm text-muted-foreground space-y-1">
+                <li>• Use arrays of objects for tabular data</li>
+                <li>• Ensure consistent property names across objects</li>
+                <li>• Use appropriate data types (strings, numbers, booleans)</li>
+                <li>• Handle null values explicitly</li>
+                <li>• Consider nested structures for complex data</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+            <div className="flex items-start gap-2">
+              <AlertCircle className="h-4 w-4 text-blue-600 dark:text-blue-400 mt-0.5" />
+              <div className="text-sm">
+                <p className="font-medium text-blue-900 dark:text-blue-100 mb-1">Conversion Notes</p>
+                <p className="text-blue-700 dark:text-blue-300">
+                  When converting CSV to JSON, the first row is treated as headers by default. 
+                  For JSON to CSV conversion, ensure your JSON is an array of objects with consistent properties.
+                </p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

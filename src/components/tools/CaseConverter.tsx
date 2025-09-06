@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
+import { Label } from "@/components/ui/label";
 import { Copy, Check, Type, RotateCcw } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -89,7 +90,7 @@ const CaseConverter = () => {
       });
   };
 
-  const performConversions = () => {
+  const performConversions = useCallback(() => {
     if (!input.trim()) {
       setConversions({
         camelCase: "",
@@ -118,7 +119,7 @@ const CaseConverter = () => {
     };
 
     setConversions(newConversions);
-  };
+  }, [input]);
 
   const copyToClipboard = async (text: string, caseType: string) => {
     try {
@@ -155,18 +156,16 @@ const CaseConverter = () => {
 
   const handleInputChange = (value: string) => {
     setInput(value);
-    // Perform conversions in real-time
-    setTimeout(() => {
-      if (value === input) {
-        performConversions();
-      }
-    }, 100);
+  };
+
+  const loadExample = (example: string) => {
+    setInput(example);
   };
 
   // Perform conversions when input changes
-  useState(() => {
+  useEffect(() => {
     performConversions();
-  });
+  }, [performConversions]);
 
   return (
     <div className="space-y-6">
@@ -470,7 +469,7 @@ const CaseConverter = () => {
                     key={example}
                     variant="outline"
                     size="sm"
-                    onClick={() => setInput(example)}
+                    onClick={() => loadExample(example)}
                     className="w-full justify-start text-xs font-mono"
                   >
                     {example}
@@ -487,7 +486,7 @@ const CaseConverter = () => {
                     key={example}
                     variant="outline"
                     size="sm"
-                    onClick={() => setInput(example)}
+                    onClick={() => loadExample(example)}
                     className="w-full justify-start text-xs"
                   >
                     {example}
@@ -504,7 +503,7 @@ const CaseConverter = () => {
                     key={example}
                     variant="outline"
                     size="sm"
-                    onClick={() => setInput(example)}
+                    onClick={() => loadExample(example)}
                     className="w-full justify-start text-xs font-mono"
                   >
                     {example}

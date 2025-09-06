@@ -3,7 +3,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Copy, Check, RefreshCw, Trash2 } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Copy, Check, RefreshCw, Trash2, Database, Key, User, FileText } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const generateUUID = () => {
@@ -54,6 +55,12 @@ export const UuidGenerator = () => {
       title: "History cleared",
       description: "UUID history has been cleared",
     });
+  };
+
+  const generateMultiple = (count: number) => {
+    const newUuids = Array.from({ length: count }, () => generateUUID());
+    setUuidHistory(prev => [...newUuids, ...prev.slice(0, 10 - count)]);
+    setCurrentUuid(newUuids[0]);
   };
 
   return (
@@ -145,22 +152,183 @@ export const UuidGenerator = () => {
         </Card>
       )}
 
+      {/* Quick Actions */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Quick Actions</CardTitle>
+          <CardDescription>Generate multiple UUIDs or use common examples</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Database className="h-4 w-4 text-blue-600" />
+                <Label className="text-sm font-medium">Bulk Generate</Label>
+              </div>
+              <div className="space-y-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => generateMultiple(5)}
+                  className="w-full justify-start text-xs"
+                >
+                  Generate 5 UUIDs
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => generateMultiple(10)}
+                  className="w-full justify-start text-xs"
+                >
+                  Generate 10 UUIDs
+                </Button>
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Key className="h-4 w-4 text-green-600" />
+                <Label className="text-sm font-medium">Common Uses</Label>
+              </div>
+              <div className="space-y-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    const uuid = generateUUID();
+                    setCurrentUuid(uuid);
+                    setUuidHistory(prev => [uuid, ...prev.slice(0, 9)]);
+                  }}
+                  className="w-full justify-start text-xs"
+                >
+                  Database Primary Key
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    const uuid = generateUUID();
+                    setCurrentUuid(uuid);
+                    setUuidHistory(prev => [uuid, ...prev.slice(0, 9)]);
+                  }}
+                  className="w-full justify-start text-xs"
+                >
+                  Session ID
+                </Button>
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <User className="h-4 w-4 text-purple-600" />
+                <Label className="text-sm font-medium">User IDs</Label>
+              </div>
+              <div className="space-y-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    const uuid = generateUUID();
+                    setCurrentUuid(uuid);
+                    setUuidHistory(prev => [uuid, ...prev.slice(0, 9)]);
+                  }}
+                  className="w-full justify-start text-xs"
+                >
+                  User ID
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    const uuid = generateUUID();
+                    setCurrentUuid(uuid);
+                    setUuidHistory(prev => [uuid, ...prev.slice(0, 9)]);
+                  }}
+                  className="w-full justify-start text-xs"
+                >
+                  API Key ID
+                </Button>
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <FileText className="h-4 w-4 text-orange-600" />
+                <Label className="text-sm font-medium">File IDs</Label>
+              </div>
+              <div className="space-y-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    const uuid = generateUUID();
+                    setCurrentUuid(uuid);
+                    setUuidHistory(prev => [uuid, ...prev.slice(0, 9)]);
+                  }}
+                  className="w-full justify-start text-xs"
+                >
+                  File ID
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    const uuid = generateUUID();
+                    setCurrentUuid(uuid);
+                    setUuidHistory(prev => [uuid, ...prev.slice(0, 9)]);
+                  }}
+                  className="w-full justify-start text-xs"
+                >
+                  Document ID
+                </Button>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* UUID Information */}
       <Card>
         <CardHeader>
           <CardTitle>About UUID v4</CardTitle>
+          <CardDescription>Understanding UUIDs and their applications</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-2 text-sm text-muted-foreground">
-          <p>
-            <strong>UUID (Universally Unique Identifier)</strong> is a 128-bit identifier 
-            used to uniquely identify objects in computer systems.
-          </p>
-          <p>
-            <strong>Version 4 UUIDs</strong> are randomly generated and have extremely low 
-            probability of collision. The format is: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
-          </p>
-          <p>
-            Common use cases include database primary keys, session IDs, and object identifiers.
-          </p>
+        <CardContent className="space-y-3 text-sm text-muted-foreground">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h4 className="font-medium text-foreground mb-2">What is UUID?</h4>
+              <ul className="space-y-1">
+                <li>• 128-bit unique identifier</li>
+                <li>• Version 4: Random generation</li>
+                <li>• Format: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx</li>
+                <li>• Extremely low collision probability</li>
+                <li>• Globally unique across systems</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-medium text-foreground mb-2">Common Use Cases:</h4>
+              <ul className="space-y-1">
+                <li>• Database primary keys</li>
+                <li>• Session identifiers</li>
+                <li>• API request IDs</li>
+                <li>• File and document IDs</li>
+                <li>• Distributed system identifiers</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+            <div className="flex items-start gap-2">
+              <Database className="h-4 w-4 text-blue-600 dark:text-blue-400 mt-0.5" />
+              <div className="text-sm">
+                <p className="font-medium text-blue-900 dark:text-blue-100 mb-1">UUID Versions</p>
+                <p className="text-blue-700 dark:text-blue-300">
+                  This generator creates UUID v4 (random UUIDs). Other versions include v1 (timestamp-based), 
+                  v3/v5 (name-based with MD5/SHA-1), but v4 is most commonly used for its simplicity and randomness.
+                </p>
+              </div>
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>

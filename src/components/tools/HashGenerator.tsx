@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Copy, Check, Hash } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Copy, Check, Hash, FileText, Lock, Key, Shield } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 // Simple hash implementations (for demo purposes - in production use crypto libraries)
@@ -120,6 +121,11 @@ export const HashGenerator = () => {
         variant: "destructive",
       });
     }
+  };
+
+  const loadExample = (example: string) => {
+    setInput(example);
+    setResults({});
   };
 
   const clearAll = () => {
@@ -242,12 +248,100 @@ export const HashGenerator = () => {
         </div>
       )}
 
+      {/* Quick Examples */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Quick Examples</CardTitle>
+          <CardDescription>Click on any example to generate hashes</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <FileText className="h-4 w-4 text-blue-600" />
+                <Label className="text-sm font-medium">Text Examples</Label>
+              </div>
+              <div className="space-y-1">
+                {[
+                  { text: "Hello World", desc: "Simple Text" },
+                  { text: "password123", desc: "Password" },
+                  { text: "Lorem ipsum dolor sit amet", desc: "Lorem Ipsum" },
+                  { text: "user@example.com", desc: "Email Address" }
+                ].map((example, index) => (
+                  <Button
+                    key={index}
+                    variant="outline"
+                    size="sm"
+                    onClick={() => loadExample(example.text)}
+                    className="w-full justify-start text-xs"
+                  >
+                    {example.desc}
+                  </Button>
+                ))}
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Lock className="h-4 w-4 text-green-600" />
+                <Label className="text-sm font-medium">Security Examples</Label>
+              </div>
+              <div className="space-y-1">
+                {[
+                  { text: "admin", desc: "Username" },
+                  { text: "secret_key_2024", desc: "API Key" },
+                  { text: "session_token_abc123", desc: "Session Token" },
+                  { text: "file_checksum_data", desc: "File Data" }
+                ].map((example, index) => (
+                  <Button
+                    key={index}
+                    variant="outline"
+                    size="sm"
+                    onClick={() => loadExample(example.text)}
+                    className="w-full justify-start text-xs"
+                  >
+                    {example.desc}
+                  </Button>
+                ))}
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Key className="h-4 w-4 text-purple-600" />
+                <Label className="text-sm font-medium">Code Examples</Label>
+              </div>
+              <div className="space-y-1">
+                {[
+                  { text: "function() { return true; }", desc: "JavaScript Function" },
+                  { text: "SELECT * FROM users", desc: "SQL Query" },
+                  { text: "git commit -m 'initial'", desc: "Git Command" },
+                  { text: "JSON.stringify(data)", desc: "JSON String" }
+                ].map((example, index) => (
+                  <Button
+                    key={index}
+                    variant="outline"
+                    size="sm"
+                    onClick={() => loadExample(example.text)}
+                    className="w-full justify-start text-xs"
+                  >
+                    {example.desc}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Hash Information */}
       <Card>
         <CardHeader>
           <CardTitle>About Cryptographic Hashes</CardTitle>
+          <CardDescription>Understanding hash functions and their security implications</CardDescription>
         </CardHeader>
         <CardContent className="space-y-3 text-sm text-muted-foreground">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <h4 className="font-medium text-foreground mb-2">Hash Functions:</h4>
               <ul className="space-y-1">
@@ -266,6 +360,19 @@ export const HashGenerator = () => {
                 <li>• File checksums</li>
                 <li>• Blockchain and cryptocurrency</li>
               </ul>
+            </div>
+          </div>
+          
+          <div className="mt-6 p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
+            <div className="flex items-start gap-2">
+              <Shield className="h-4 w-4 text-orange-600 dark:text-orange-400 mt-0.5" />
+              <div className="text-sm">
+                <p className="font-medium text-orange-900 dark:text-orange-100 mb-1">Security Warning</p>
+                <p className="text-orange-700 dark:text-orange-300">
+                  Never use MD5 or SHA-1 for security-critical applications. Always use SHA-256 or SHA-512 
+                  for password hashing, and remember to use proper salting techniques.
+                </p>
+              </div>
             </div>
           </div>
         </CardContent>

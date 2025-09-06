@@ -1,0 +1,25 @@
+{
+  "name": "DevTools Hub - Essential Developer Tools",
+  "short_name": "DevTools Hub",
+  "description": "Free online developer tools including JSON formatter, UUID generator, Base64 encoder/decoder, URL encoder, and hash generators. Fast, secure, and works offline.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["developer", "tools", "utilities"],
+  "icons": [
+    {
+      "sizes": "192x192",
+      "src": "/android-chrome-192x192.png",
+      "type": "image/png"
+    },
+    {
+      "sizes": "512x512",
+      "src": "/android-chrome-512x512.png",
+      "type": "image/png"
+    }
+  ]
+}

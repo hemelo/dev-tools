@@ -4,8 +4,17 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
-import { Copy, Check, AlertCircle, CheckCircle, RotateCcw, FileText } from "lucide-react";
+import { Copy, Check, AlertCircle, CheckCircle, RotateCcw, FileText, BarChart3, Download, Upload, Info, Zap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+
+interface XmlStats {
+  size: number;
+  lines: number;
+  elements: number;
+  attributes: number;
+  depth: number;
+  types: Record<string, number>;
+}
 
 export const XmlFormatter = () => {
   const [input, setInput] = useState("");
@@ -13,6 +22,7 @@ export const XmlFormatter = () => {
   const [isValid, setIsValid] = useState<boolean | null>(null);
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
+  const [stats, setStats] = useState<XmlStats | null>(null);
   const { toast } = useToast();
 
   const formatXml = (xml: string): string => {
@@ -48,6 +58,74 @@ export const XmlFormatter = () => {
       .replace(/\s+>/g, '>')
       .replace(/<\s+/g, '<')
       .trim();
+  };
+
+  const calculateStats = (xml: string): XmlStats => {
+    if (!xml.trim()) {
+      return {
+        size: 0,
+        lines: 0,
+        elements: 0,
+        attributes: 0,
+        depth: 0,
+        types: {}
+      };
+    }
+
+    const lines = xml.split('\n').length;
+    const size = new Blob([xml]).size;
+    
+    // Count elements
+    const elementMatches = xml.match(/<[^\/!?][^>]*>/g) || [];
+    const elements = elementMatches.length;
+    
+    // Count attributes
+    const attributeMatches = xml.match(/\s+\w+\s*=\s*["'][^"']*["']/g) || [];
+    const attributes = attributeMatches.length;
+    
+    // Calculate depth
+    let maxDepth = 0;
+    let currentDepth = 0;
+    const tagStack: string[] = [];
+    const tagRegex = /<\/?([^>\s\/]+)[^>]*>/g;
+    let match;
+
+    while ((match = tagRegex.exec(xml)) !== null) {
+      const fullTag = match[0];
+      const tagName = match[1];
+
+      if (fullTag.startsWith('</')) {
+        // Closing tag
+        if (tagStack.length > 0 && tagStack[tagStack.length - 1] === tagName) {
+          tagStack.pop();
+          currentDepth = tagStack.length;
+        }
+      } else if (!fullTag.endsWith('/>') && !fullTag.startsWith('<?') && !fullTag.startsWith('<!')) {
+        // Opening tag (not self-closing, not declaration, not comment)
+        tagStack.push(tagName);
+        currentDepth = tagStack.length;
+        maxDepth = Math.max(maxDepth, currentDepth);
+      }
+    }
+
+    // Count element types
+    const types: Record<string, number> = {};
+    const elementTypeRegex = /<([^\/!?>\s]+)/g;
+    let typeMatch;
+    
+    while ((typeMatch = elementTypeRegex.exec(xml)) !== null) {
+      const elementType = typeMatch[1];
+      types[elementType] = (types[elementType] || 0) + 1;
+    }
+
+    return {
+      size,
+      lines,
+      elements,
+      attributes,
+      depth: maxDepth,
+      types
+    };
   };
 
   const validateXml = (xml: string): { isValid: boolean; error?: string } => {
@@ -102,6 +180,7 @@ export const XmlFormatter = () => {
       if (!input.trim()) {
         setError("Please enter XML data");
         setIsValid(false);
+        setStats(null);
         return;
       }
 
@@ -110,6 +189,7 @@ export const XmlFormatter = () => {
         setError(validation.error || "Invalid XML");
         setIsValid(false);
         setOutput("");
+        setStats(null);
         return;
       }
 
@@ -117,10 +197,12 @@ export const XmlFormatter = () => {
       setOutput(formatted);
       setIsValid(true);
       setError("");
+      setStats(calculateStats(formatted));
     } catch (err) {
       setError((err as Error).message);
       setIsValid(false);
       setOutput("");
+      setStats(null);
     }
   };
 
@@ -129,6 +211,7 @@ export const XmlFormatter = () => {
       if (!input.trim()) {
         setError("Please enter XML data");
         setIsValid(false);
+        setStats(null);
         return;
       }
 
@@ -137,6 +220,7 @@ export const XmlFormatter = () => {
         setError(validation.error || "Invalid XML");
         setIsValid(false);
         setOutput("");
+        setStats(null);
         return;
       }
 
@@ -144,11 +228,84 @@ export const XmlFormatter = () => {
       setOutput(minified);
       setIsValid(true);
       setError("");
+      setStats(calculateStats(minified));
     } catch (err) {
       setError((err as Error).message);
       setIsValid(false);
       setOutput("");
+      setStats(null);
     }
+  };
+
+  const validateXmlInput = () => {
+    try {
+      if (!input.trim()) {
+        setError("Please enter XML data");
+        setIsValid(false);
+        setStats(null);
+        return;
+      }
+
+      const validation = validateXml(input);
+      if (!validation.isValid) {
+        setError(validation.error || "Invalid XML");
+        setIsValid(false);
+        setOutput("");
+        setStats(null);
+        toast({
+          title: "Validation Failed",
+          description: validation.error || "Invalid XML",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      setIsValid(true);
+      setError("");
+      setOutput("");
+      setStats(calculateStats(input));
+      toast({
+        title: "Validation Successful",
+        description: "XML is valid and well-formed",
+      });
+    } catch (err) {
+      setError((err as Error).message);
+      setIsValid(false);
+      setOutput("");
+      setStats(null);
+      toast({
+        title: "Validation Failed",
+        description: (err as Error).message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const downloadXml = () => {
+    if (!output) return;
+    
+    const blob = new Blob([output], { type: 'application/xml' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'formatted.xml';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    toast({
+      title: "Downloaded!",
+      description: "XML file has been downloaded",
+    });
+  };
+
+  const loadExample = (example: string) => {
+    setInput(example);
+    setOutput("");
+    setIsValid(null);
+    setError("");
+    setStats(null);
   };
 
   const copyToClipboard = async () => {
@@ -174,6 +331,7 @@ export const XmlFormatter = () => {
     setOutput("");
     setIsValid(null);
     setError("");
+    setStats(null);
   };
 
   return (
@@ -225,6 +383,10 @@ export const XmlFormatter = () => {
               <Button variant="outline" onClick={minifyXmlInput} disabled={!input.trim()}>
                 Minify
               </Button>
+              <Button variant="outline" onClick={validateXmlInput} disabled={!input.trim()}>
+                <CheckCircle className="h-4 w-4 mr-2" />
+                Validate
+              </Button>
               <Button variant="outline" onClick={clearAll}>
                 <RotateCcw className="h-4 w-4 mr-2" />
                 Clear
@@ -238,15 +400,26 @@ export const XmlFormatter = () => {
             <div className="flex items-center justify-between">
               <CardTitle>Output</CardTitle>
               {output && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={copyToClipboard}
-                  className="gap-2"
-                >
-                  {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                  {copied ? "Copied!" : "Copy"}
-                </Button>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={downloadXml}
+                    className="gap-2"
+                  >
+                    <Download className="h-4 w-4" />
+                    Download
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={copyToClipboard}
+                    className="gap-2"
+                  >
+                    {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                    {copied ? "Copied!" : "Copy"}
+                  </Button>
+                </div>
               )}
             </div>
             <CardDescription>
@@ -277,6 +450,72 @@ export const XmlFormatter = () => {
         </Card>
       </div>
 
+      {/* Statistics Panel */}
+      {stats && (
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <BarChart3 className="h-5 w-5" />
+              <CardTitle>XML Statistics</CardTitle>
+            </div>
+            <CardDescription>Detailed analysis of your XML document</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+              <div className="text-center p-4 bg-muted/50 rounded-lg">
+                <div className="text-2xl font-bold text-primary">{stats.size}</div>
+                <div className="text-sm text-muted-foreground">Bytes</div>
+              </div>
+              <div className="text-center p-4 bg-muted/50 rounded-lg">
+                <div className="text-2xl font-bold text-primary">{stats.lines}</div>
+                <div className="text-sm text-muted-foreground">Lines</div>
+              </div>
+              <div className="text-center p-4 bg-muted/50 rounded-lg">
+                <div className="text-2xl font-bold text-primary">{stats.elements}</div>
+                <div className="text-sm text-muted-foreground">Elements</div>
+              </div>
+              <div className="text-center p-4 bg-muted/50 rounded-lg">
+                <div className="text-2xl font-bold text-primary">{stats.attributes}</div>
+                <div className="text-sm text-muted-foreground">Attributes</div>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h4 className="font-medium mb-3">Document Structure</h4>
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground">Maximum Depth:</span>
+                    <span className="font-mono text-sm">{stats.depth}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-muted-foreground">Element Types:</span>
+                    <span className="font-mono text-sm">{Object.keys(stats.types).length}</span>
+                  </div>
+                </div>
+              </div>
+              
+              {Object.keys(stats.types).length > 0 && (
+                <div>
+                  <h4 className="font-medium mb-3">Element Types</h4>
+                  <div className="space-y-1 max-h-32 overflow-y-auto">
+                    {Object.entries(stats.types)
+                      .sort(([,a], [,b]) => b - a)
+                      .slice(0, 10)
+                      .map(([type, count]) => (
+                        <div key={type} className="flex justify-between text-sm">
+                          <span className="font-mono text-muted-foreground">{type}:</span>
+                          <span className="font-mono">{count}</span>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Quick Examples */}
       <Card>
         <CardHeader>
@@ -297,7 +536,7 @@ export const XmlFormatter = () => {
                     key={index}
                     variant="outline"
                     size="sm"
-                    onClick={() => setInput(example.xml)}
+                    onClick={() => loadExample(example.xml)}
                     className="w-full justify-start text-xs font-mono"
                   >
                     {example.desc}
@@ -318,7 +557,7 @@ export const XmlFormatter = () => {
                     key={index}
                     variant="outline"
                     size="sm"
-                    onClick={() => setInput(example.xml)}
+                    onClick={() => loadExample(example.xml)}
                     className="w-full justify-start text-xs font-mono"
                   >
                     {example.desc}
@@ -339,7 +578,7 @@ export const XmlFormatter = () => {
                     key={index}
                     variant="outline"
                     size="sm"
-                    onClick={() => setInput(example.xml)}
+                    onClick={() => loadExample(example.xml)}
                     className="w-full justify-start text-xs font-mono"
                   >
                     {example.desc}
@@ -378,6 +617,19 @@ export const XmlFormatter = () => {
                 <li>• Missing quotes around attribute values</li>
                 <li>• Improper nesting of elements</li>
               </ul>
+            </div>
+          </div>
+          
+          <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+            <div className="flex items-start gap-2">
+              <Zap className="h-4 w-4 text-blue-600 dark:text-blue-400 mt-0.5" />
+              <div className="text-sm">
+                <p className="font-medium text-blue-900 dark:text-blue-100 mb-1">Pro Tip</p>
+                <p className="text-blue-700 dark:text-blue-300">
+                  Use the Validate button to check XML structure without formatting. The statistics panel shows 
+                  detailed analysis including element counts, document depth, and attribute statistics.
+                </p>
+              </div>
             </div>
           </div>
         </CardContent>
