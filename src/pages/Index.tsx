@@ -838,6 +838,15 @@ const Index = () => {
                   <Linkedin className="h-4 w-4 mr-2" />
                   LinkedIn
                 </Button>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="rounded-full hover:bg-primary/10 hover:border-primary transition-all duration-200"
+                  onClick={() => window.open('mailto:hemelo@pm.me', '_blank')}
+                >
+                  <Mail className="h-4 w-4 mr-2" />
+                  Email
+                </Button>
               </div>
             </div>
 
@@ -862,7 +871,7 @@ const Index = () => {
                     rel="noopener noreferrer"
                     className="hover:text-primary transition-colors cursor-pointer"
                   >
-                    @hemelo
+                    GitHub Profile
                   </a>
                 </div>
                 <div className="flex items-center gap-2">
@@ -873,7 +882,7 @@ const Index = () => {
                     rel="noopener noreferrer"
                     className="hover:text-primary transition-colors cursor-pointer"
                   >
-                    @hemelodev
+                    Twitter Profile
                   </a>
                 </div>
                 <div className="flex items-center gap-2">
@@ -888,19 +897,15 @@ const Index = () => {
                   </a>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Github className="h-4 w-4" />
+                  <Mail className="h-4 w-4" />
                   <a 
-                    href="https://github.com/hemelo/dev-tools" 
+                    href="mailto:henrique@hemelo.fyi" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="hover:text-primary transition-colors cursor-pointer"
                   >
-                    dev-tools repository
+                    hemelo@pm.me
                   </a>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Code2 className="h-4 w-4" />
-                  <span>Full Stack Developer</span>
                 </div>
               </div>
             </div>
