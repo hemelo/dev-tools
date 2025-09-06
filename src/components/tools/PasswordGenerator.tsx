@@ -71,31 +71,96 @@ export const PasswordGenerator = () => {
   };
 
   const getStrengthColor = (score: number) => {
-    if (score < 3) return "text-red-500";
+    if (score < 2) return "text-red-500";
+    if (score < 3) return "text-orange-500";
     if (score < 4) return "text-yellow-500";
-    return "text-green-500";
+    if (score < 5) return "text-green-500";
+    return "text-emerald-500";
   };
 
   const getStrengthText = (score: number) => {
     if (score < 2) return "Very Weak";
     if (score < 3) return "Weak";
-    if (score < 4) return "Medium";
+    if (score < 4) return "Fair";
     if (score < 5) return "Strong";
     return "Very Strong";
   };
 
-  const calculateStrength = () => {
-    let score = 0;
-    if (length[0] >= 12) score++;
-    if (length[0] >= 16) score++;
-    if (includeUppercase) score++;
-    if (includeLowercase) score++;
-    if (includeNumbers) score++;
-    if (includeSymbols) score++;
-    return Math.min(score, 5);
+  const calculateEntropy = (password: string) => {
+    if (!password) return 0;
+    
+    let charsetSize = 0;
+    let hasUppercase = false;
+    let hasLowercase = false;
+    let hasNumbers = false;
+    let hasSymbols = false;
+    
+    // Analyze actual character usage in the password
+    for (const char of password) {
+      if (/[A-Z]/.test(char)) {
+        hasUppercase = true;
+        charsetSize += 26;
+      } else if (/[a-z]/.test(char)) {
+        hasLowercase = true;
+        charsetSize += 26;
+      } else if (/[0-9]/.test(char)) {
+        hasNumbers = true;
+        charsetSize += 10;
+      } else if (/[^A-Za-z0-9]/.test(char)) {
+        hasSymbols = true;
+        charsetSize += 32; // Common symbols
+      }
+    }
+    
+    // Calculate entropy: log2(charset_size^length)
+    const entropy = Math.log2(Math.pow(charsetSize, password.length));
+    return entropy;
   };
 
-  const strength = calculateStrength();
+  const calculateStrength = (password: string) => {
+    if (!password) return 0;
+    
+    let score = 0;
+    const entropy = calculateEntropy(password);
+    
+    // Length scoring (more important for longer passwords)
+    if (password.length >= 8) score += 0.5;
+    if (password.length >= 12) score += 1;
+    if (password.length >= 16) score += 1;
+    if (password.length >= 20) score += 0.5;
+    
+    // Character diversity scoring
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasNumbers = /[0-9]/.test(password);
+    const hasSymbols = /[^A-Za-z0-9]/.test(password);
+    
+    let diversityScore = 0;
+    if (hasUppercase) diversityScore += 0.5;
+    if (hasLowercase) diversityScore += 0.5;
+    if (hasNumbers) diversityScore += 0.5;
+    if (hasSymbols) diversityScore += 1; // Symbols are more valuable
+    
+    score += diversityScore;
+    
+    // Entropy-based scoring
+    if (entropy >= 30) score += 0.5;
+    if (entropy >= 40) score += 0.5;
+    if (entropy >= 50) score += 0.5;
+    if (entropy >= 60) score += 0.5;
+    
+    // Pattern penalties
+    if (/(.)\1{2,}/.test(password)) score -= 0.5; // Repeated characters
+    if (/123|abc|qwe|asd/i.test(password)) score -= 0.5; // Common sequences
+    if (/password|admin|user/i.test(password)) score -= 1; // Common words
+    
+    // Bonus for very long passwords
+    if (password.length >= 24) score += 0.5;
+    
+    return Math.max(0, Math.min(5, Math.round(score * 2) / 2)); // Round to nearest 0.5
+  };
+
+  const strength = calculateStrength(password);
 
   return (
     <div className="space-y-6">
@@ -132,12 +197,44 @@ export const PasswordGenerator = () => {
           </div>
           
           {password && (
-            <div className="flex items-center gap-2">
-              <Shield className="h-4 w-4" />
-              <span className="text-sm">Strength:</span>
-              <span className={`text-sm font-medium ${getStrengthColor(strength)}`}>
-                {getStrengthText(strength)}
-              </span>
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <Shield className="h-4 w-4" />
+                <span className="text-sm">Strength:</span>
+                <span className={`text-sm font-medium ${getStrengthColor(strength)}`}>
+                  {getStrengthText(strength)}
+                </span>
+                <span className="text-xs text-muted-foreground">
+                  ({strength}/5)
+                </span>
+              </div>
+              
+              {/* Strength bar */}
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div 
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    strength < 2 ? 'bg-red-500' :
+                    strength < 3 ? 'bg-orange-500' :
+                    strength < 4 ? 'bg-yellow-500' :
+                    strength < 5 ? 'bg-green-500' : 'bg-emerald-500'
+                  }`}
+                  style={{ width: `${(strength / 5) * 100}%` }}
+                />
+              </div>
+              
+              {/* Entropy display */}
+              <div className="text-xs text-muted-foreground">
+                Entropy: {calculateEntropy(password).toFixed(1)} bits
+                {calculateEntropy(password) >= 50 && (
+                  <span className="ml-2 text-green-600">✓ Excellent</span>
+                )}
+                {calculateEntropy(password) >= 30 && calculateEntropy(password) < 50 && (
+                  <span className="ml-2 text-yellow-600">✓ Good</span>
+                )}
+                {calculateEntropy(password) < 30 && (
+                  <span className="ml-2 text-red-600">⚠ Low</span>
+                )}
+              </div>
             </div>
           )}
         </CardContent>
