@@ -18,7 +18,7 @@ interface CaseConversion {
   UPPERCASE: string;
 }
 
-export const CaseConverter = () => {
+const CaseConverter = () => {
   const [input, setInput] = useState("");
   const [conversions, setConversions] = useState<CaseConversion>({
     camelCase: "",
@@ -518,3 +518,5 @@ export const CaseConverter = () => {
     </div>
   );
 };
+
+export default CaseConverter;

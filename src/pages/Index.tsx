@@ -48,7 +48,7 @@ import { CsvJsonConverter } from "@/components/tools/CsvJsonConverter";
 import { ColorPicker } from "@/components/tools/ColorPicker";
 import { NumberBaseConverter } from "@/components/tools/NumberBaseConverter";
 import { TimestampConverter } from "@/components/tools/TimestampConverter";
-import { CaseConverter } from "@/components/tools/CaseConverter";
+import CaseConverter from "@/components/tools/CaseConverter";
 import { RegexTester } from "@/components/tools/RegexTester";
 import { QrCodeGenerator } from "@/components/tools/QrCodeGenerator";
 import { TextDiffTool } from "@/components/tools/TextDiffTool";
