@@ -9,7 +9,11 @@ import {
   Link, 
   Braces,
   Key,
-  Globe
+  Globe,
+  Shield,
+  CreditCard,
+  Settings,
+  Zap
 } from "lucide-react";
 import { useState } from "react";
 import { JsonFormatter } from "@/components/tools/JsonFormatter";
@@ -17,6 +21,10 @@ import { UuidGenerator } from "@/components/tools/UuidGenerator";
 import { Base64Tool } from "@/components/tools/Base64Tool";
 import { UrlTool } from "@/components/tools/UrlTool";
 import { HashGenerator } from "@/components/tools/HashGenerator";
+import { PasswordGenerator } from "@/components/tools/PasswordGenerator";
+import { JwtTool } from "@/components/tools/JwtTool";
+import { HmacGenerator } from "@/components/tools/HmacGenerator";
+import { AesTool } from "@/components/tools/AesTool";
 
 const tools = [
   {
@@ -52,7 +60,35 @@ const tools = [
     name: "Hash Generator",
     description: "Generate MD5, SHA256, and other hashes",
     icon: Hash,
-    category: "Security"
+    category: "Cryptography"
+  },
+  {
+    id: "password",
+    name: "Password Generator",
+    description: "Generate secure passwords with custom options",
+    icon: Shield,
+    category: "Cryptography"
+  },
+  {
+    id: "jwt",
+    name: "JWT Decoder",
+    description: "Decode and validate JSON Web Tokens",
+    icon: CreditCard,
+    category: "Cryptography"
+  },
+  {
+    id: "hmac",
+    name: "HMAC Generator",
+    description: "Generate HMAC signatures for authentication",
+    icon: Settings,
+    category: "Cryptography"
+  },
+  {
+    id: "aes",
+    name: "AES Encryption",
+    description: "Encrypt and decrypt data with AES algorithm",
+    icon: Zap,
+    category: "Cryptography"
   }
 ];
 
@@ -71,6 +107,14 @@ const Index = () => {
         return <UrlTool />;
       case "hash":
         return <HashGenerator />;
+      case "password":
+        return <PasswordGenerator />;
+      case "jwt":
+        return <JwtTool />;
+      case "hmac":
+        return <HmacGenerator />;
+      case "aes":
+        return <AesTool />;
       default:
         return null;
     }
