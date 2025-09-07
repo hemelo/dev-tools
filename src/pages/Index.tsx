@@ -28,7 +28,6 @@ import {
   BarChart3,
   MapPin,
   Eye,
-  Palette as GradientIcon,
   Send,
   Database,
   Network,
@@ -42,7 +41,17 @@ import {
   Twitter,
   Linkedin,
   Mail,
-  Filter
+  Filter,
+  Image,
+  Layout,
+  Timer,
+  Dice1,
+  ArrowRightLeft,
+  GitBranch,
+  Smartphone,
+  Camera,
+  GitMerge,
+  Calendar
 } from "lucide-react";
 import { useState, useMemo, useEffect, useRef } from "react";
 import { JsonFormatter } from "@/components/tools/JsonFormatter";
@@ -81,8 +90,161 @@ import CronGenerator from "@/components/tools/CronGenerator";
 import SlugGenerator from "@/components/tools/SlugGenerator";
 import SqlFormatter from "@/components/tools/SqlFormatter";
 import MockDataGenerator from "@/components/tools/MockDataGenerator";
+import { FaviconGenerator } from "@/components/tools/FaviconGenerator";
+import { FlexboxCreator } from "@/components/tools/FlexboxCreator";
+import { TimezoneConverter } from "@/components/tools/TimezoneConverter";
+import { RandomNumberGenerator } from "@/components/tools/RandomNumberGenerator";
+import { UnitConverter } from "@/components/tools/UnitConverter";
+import { ChecksumTool } from "@/components/tools/ChecksumTool";
+import { APKAnalyzer } from "@/components/tools/APKAnalyzer";
+import { EXIFInspector } from "@/components/tools/EXIFInspector";
+import { BarcodeGenerator } from "@/components/tools/BarcodeGenerator";
+import { SequenceDiagrams } from "@/components/tools/SequenceDiagrams";
+import { MatrixCalculator } from "@/components/tools/MatrixCalculator";
+import { ASCIIUnicodeExplorer } from "@/components/tools/ASCIIUnicodeExplorer";
+import { ManifestGenerator } from "@/components/tools/ManifestGenerator";
+import { StatisticsCalculator } from "@/components/tools/StatisticsCalculator";
+import { NanoIDULIDGenerator } from "@/components/tools/NanoIDULIDGenerator";
+import { WorkdayCalculator } from "@/components/tools/WorkdayCalculator";
+import { PasswordStrengthTester } from "@/components/tools/PasswordStrengthTester";
 
 const tools = [
+  {
+    id: "sequence-diagrams",
+    name: "Sequence Diagrams",
+    description: "Create PlantUML-style sequence diagrams with live preview and professional rendering",
+    icon: GitMerge,
+    category: "Web Development",
+    isNew: true
+  },
+  {
+    id: "matrix-calculator",
+    name: "Matrix Calculator",
+    description: "Perform matrix operations including determinant, inverse, transpose, and more",
+    icon: Calculator,
+    category: "Mathematics",
+    isNew: true
+  },
+  {
+    id: "ascii-unicode-explorer",
+    name: "ASCII/Unicode Explorer",
+    description: "Explore ASCII and Unicode characters with detailed information and encoding details",
+    icon: Type,
+    category: "Text & Data",
+    isNew: true
+  },
+  {
+    id: "manifest-generator",
+    name: "PWA Manifest Generator",
+    description: "Create and customize Progressive Web App manifests with comprehensive configuration options",
+    icon: FileText,
+    category: "Web Development",
+    isNew: true
+  },
+  {
+    id: "statistics-calculator",
+    name: "Statistics Calculator",
+    description: "Calculate descriptive statistics, generate probability distributions, and analyze data with comprehensive statistical tools",
+    icon: BarChart3,
+    category: "Mathematics",
+    isNew: true
+  },
+  {
+    id: "nanoid-ulid-generator",
+    name: "NanoID / ULID Generator",
+    description: "Generate unique identifiers using NanoID and ULID algorithms with comprehensive customization options",
+    icon: Hash,
+    category: "Generators",
+    isNew: true
+  },
+  {
+    id: "workday-calculator",
+    name: "Workday Calculator",
+    description: "Calculate business days, working hours, and project timelines with comprehensive holiday and weekend management",
+    icon: Calendar,
+    category: "Business",
+    isNew: true
+  },
+  {
+    id: "password-strength-tester",
+    name: "Password Strength Tester",
+    description: "Analyze password strength, calculate entropy, and get security recommendations",
+    icon: Shield,
+    category: "Cryptography & Security",
+    isNew: true
+  },
+  {
+    id: "barcode-generator",
+    name: "Barcode Generator",
+    description: "Generate professional barcodes in multiple formats with customizable options",
+    icon: BarChart3,
+    category: "Generator",
+    isNew: true
+  },
+  {
+    id: "exif-inspector",
+    name: "EXIF Inspector",
+    description: "Analyze image metadata and EXIF data for privacy, technical details, and location information",
+    icon: Camera,
+    category: "Security",
+    isNew: true
+  },
+  {
+    id: "apk-analyzer",
+    name: "APK Analyzer",
+    description: "Analyze Android APK files for security, permissions, and structure information",
+    icon: Smartphone,
+    category: "Security",
+    isNew: true
+  },
+  {
+    id: "checksum-tool",
+    name: "Checksum Tool",
+    description: "Professional file integrity verification with multiple hash algorithms and batch processing",
+    icon: Shield,
+    category: "Security",
+    isNew: true
+  },
+  {
+    id: "unit-converter",
+    name: "Unit Converter",
+    description: "Professional unit conversion with comprehensive categories, precision control, and conversion history",
+    icon: ArrowRightLeft,
+    category: "Utilities",
+    isNew: true
+  },
+  {
+    id: "random-generator",
+    name: "Random Number Generator",
+    description: "Professional random number generation with statistical analysis and seed support",
+    icon: Dice1,
+    category: "Utilities",
+    isNew: true
+  },
+  {
+    id: "timezone-converter",
+    name: "Timezone Converter",
+    description: "Professional timezone conversion with DST support and global coverage",
+    icon: Timer,
+    category: "Web Development",
+    isNew: true
+  },
+  {
+    id: "flexbox-creator",
+    name: "Flexbox Creator",
+    description: "Create and experiment with flexbox layouts with real-time visual feedback",
+    icon: Layout,
+    category: "Web Development",
+    isNew: true
+  },
+  {
+    id: "favicon-generator",
+    name: "Favicon Generator",
+    description: "Create favicons from emojis, text, or images with multiple formats",
+    icon: Image,
+    category: "Web Development",
+    isNew: true
+  },
   {
     id: "json",
     name: "JSON Formatter",
@@ -241,7 +403,7 @@ const tools = [
     id: "css-gradient-generator",
     name: "CSS Gradient Generator",
     description: "Create beautiful CSS gradients with visual preview",
-    icon: GradientIcon,
+    icon: Palette,
     category: "Web Development"
   },
   {
@@ -473,6 +635,40 @@ const Index = () => {
 
   const renderTool = () => {
     switch (selectedTool) {
+      case "sequence-diagrams":
+        return <SequenceDiagrams />;
+      case "matrix-calculator":
+        return <MatrixCalculator />;
+      case "ascii-unicode-explorer":
+        return <ASCIIUnicodeExplorer />;
+      case "manifest-generator":
+        return <ManifestGenerator />;
+      case "statistics-calculator":
+        return <StatisticsCalculator />;
+      case "nanoid-ulid-generator":
+        return <NanoIDULIDGenerator />;
+      case "workday-calculator":
+        return <WorkdayCalculator />;
+      case "password-strength-tester":
+        return <PasswordStrengthTester />;
+      case "barcode-generator":
+        return <BarcodeGenerator />;
+      case "exif-inspector":
+        return <EXIFInspector />;
+      case "apk-analyzer":
+        return <APKAnalyzer />;
+      case "checksum-tool":
+        return <ChecksumTool />;
+      case "unit-converter":
+        return <UnitConverter />;
+      case "random-generator":
+        return <RandomNumberGenerator />;
+      case "timezone-converter":
+        return <TimezoneConverter />;
+      case "flexbox-creator":
+        return <FlexboxCreator />;
+      case "favicon-generator":
+        return <FaviconGenerator />;
       case "json":
         return <JsonFormatter />;
       case "csv-json":
@@ -763,9 +959,16 @@ const Index = () => {
                       <div className="p-3 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
                         <IconComponent className="h-6 w-6 text-primary group-hover:scale-110 transition-all duration-200" />
                       </div>
-                      <Badge variant="secondary" className="text-xs">
-                        {tool.category}
-                      </Badge>
+                      <div className="flex flex-col gap-1 items-end">
+                        <Badge variant="secondary" className="text-xs">
+                          {tool.category}
+                        </Badge>
+                        {('isNew' in tool && tool.isNew) && (
+                          <Badge variant="default" className="text-xs bg-green-500 hover:bg-green-600">
+                            NEW
+                          </Badge>
+                        )}
+                      </div>
                     </div>
                     <CardTitle className="group-hover:text-primary transition-colors text-lg">
                       {tool.name}

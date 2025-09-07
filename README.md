@@ -55,6 +55,8 @@ Built a modern, performant web application using:
 - **Slug Generator**: Generate URL-friendly slugs from any text with customizable options and multiple formats
 
 #### 🔐 **Cryptography & Security**
+- **EXIF Inspector**: Analyze image metadata and EXIF data for privacy, technical details, and location information with comprehensive reporting
+- **APK Analyzer**: Analyze Android APK files for security, permissions, and structure information with comprehensive reporting
 - **Password Generator**: Advanced generator with customizable options, **entropy-based strength measurement**, and pattern detection
 - **Hash Generator**: Support for MD5, SHA-1, SHA-256, SHA-384, SHA-512 with copy-to-clipboard functionality
 - **HMAC Generator**: Message authentication with multiple hash algorithms and secure key handling
@@ -62,14 +64,29 @@ Built a modern, performant web application using:
 - **JWT Decoder**: Decode and validate JSON Web Tokens with header and payload inspection
 
 #### 🎲 **Generators**
+- **Barcode Generator**: Generate professional barcodes in multiple formats (Code 128, EAN-13, UPC-A, etc.) with customizable options
+- **Checksum Tool**: Professional file integrity verification with multiple hash algorithms and batch processing
+- **Unit Converter**: Professional unit conversion with comprehensive categories, precision control, and conversion history
+- **Random Number Generator**: Professional random number generation with statistical analysis, seed support, and multiple output formats
 - **UUID Generator**: Generate RFC 4122 compliant UUIDs (v4) with cryptographically secure random generation
 - **QR Code Generator**: Generate **real, scannable QR codes** from text, URLs, or any data with customizable size, colors, and error correction levels
 - **Mock Data Generator**: Generate realistic fake data including names, emails, addresses, phone numbers, and more in JSON, CSV, or SQL formats
 
 #### 🌐 **Web Development Tools**
+- **Sequence Diagrams**: Create PlantUML-style sequence diagrams with live preview and professional rendering
+- **Timezone Converter**: Professional timezone conversion with DST support, multiple timezones, global coverage, and real-time updates
+- **Flexbox Creator**: Interactive flexbox layout builder with real-time visual feedback, comprehensive property controls, and CSS code generation
+- **Favicon Generator**: Create favicons from emojis, text, or images with multiple formats (ICO, PNG, SVG) and sizes (16x16 to 512x512)
 - **Color Picker & Converter**: Interactive color picker with conversion between HEX, RGB, HSL, CMYK formats and color variations
 - **Number Base Converter**: Convert between binary, octal, decimal, and hexadecimal bases with validation and quick examples
 - **Timestamp Converter**: Convert between Unix timestamps, ISO dates, and human-readable formats with timezone support
+- **Matrix Calculator**: Perform matrix operations including determinant, inverse, transpose, trace, rank, eigenvalues, and arithmetic operations
+- **ASCII/Unicode Explorer**: Explore ASCII and Unicode characters with detailed information, encoding details, and copy functionality
+- **PWA Manifest Generator**: Create and customize Progressive Web App manifests with comprehensive configuration options
+- **Statistics Calculator**: Calculate descriptive statistics, generate probability distributions, and analyze data with comprehensive statistical tools
+- **NanoID / ULID Generator**: Generate unique identifiers using NanoID and ULID algorithms with comprehensive customization options
+- **Workday Calculator**: Calculate business days, working hours, and project timelines with comprehensive holiday and weekend management
+- **Password Strength Tester**: Analyze password strength, calculate entropy, and get security recommendations
 - **CSS Gradient Generator**: Create beautiful CSS gradients with visual preview, predefined templates, and export options
 - **Color Palette Generator**: Generate color palettes using harmony rules, image extraction, or manual selection with export capabilities
 
@@ -138,6 +155,8 @@ Built a modern, performant web application using:
 - Uses Web Crypto API for secure random generation
 - PBKDF2 with 100,000 iterations for key derivation
 - Secure random number generation for UUIDs and passwords
+- APK analysis performed entirely in browser with no file uploads
+- EXIF data analysis performed locally with privacy protection
 
 #### **Modern UX/UI**
 - Responsive design that works on all devices
@@ -170,12 +189,23 @@ Built a modern, performant web application using:
 - **Reliability**: No dependency on external services or internet connectivity
 - **Security**: Sensitive operations like password generation and encryption happen locally
 - **Learning**: Clear feedback helps developers understand security concepts (entropy, strength, QR encoding)
-- **Comprehensive Coverage**: 36 essential tools covering all major development needs
+- **Comprehensive Coverage**: 47 essential tools covering all major development needs
 - **Enhanced Productivity**: One-stop solution for text processing, data conversion, web development, and cryptography
 - **Professional Quality**: Real QR codes, advanced text processing, and enterprise-grade security features
 - **Developer Experience**: Interactive examples, real-time validation, and intuitive interfaces
 
 ### Recent Improvements & Updates
+- **Password Strength Tester**: Added comprehensive password security analysis tool with entropy calculations, pattern detection, and security recommendations
+- **Workday Calculator**: Added comprehensive business day calculation tool with holiday management, timezone support, and project timeline calculations
+- **NanoID / ULID Generator**: Added comprehensive unique identifier generation tool with NanoID and ULID support, customization options, and analysis features
+- **Statistics Calculator**: Added comprehensive statistical analysis tool with descriptive statistics, probability distributions, and data sampling
+- **PWA Manifest Generator**: Added comprehensive PWA manifest creation tool with icon management, validation, and export functionality
+- **ASCII/Unicode Explorer**: Added comprehensive character exploration tool with detailed information, encoding details, search, filtering, and copy functionality
+- **Matrix Calculator**: Added comprehensive matrix operations tool with determinant, inverse, transpose, trace, rank, eigenvalues, and arithmetic operations
+- **Sequence Diagrams**: Added PlantUML-style sequence diagram tool with live preview, templates, and professional rendering
+- **Barcode Generator**: Added comprehensive barcode generation tool with multiple formats, customization options, and export functionality
+- **EXIF Inspector**: Added comprehensive image metadata analysis tool with privacy assessment, GPS location detection, and technical parameter extraction
+- **APK Analyzer**: Added comprehensive Android APK analysis tool with security assessment, permissions analysis, and structure visualization
 - **Real QR Code Generation**: Upgraded from simple patterns to authentic, scannable QR codes using `react-qr-code`
 - **Enhanced Text Processing**: Added YAML/JSON conversion, XML formatting, SQL formatting, and advanced text diff capabilities
 - **New Tool Categories**: Added Data Analysis, Network, Content, and Development utility categories
@@ -243,14 +273,32 @@ npm run build
 | **Regex Tester** | Text | Test regular expressions with live preview |
 | **SQL Formatter** | Text | Format, validate, and minify SQL queries with statistics |
 | **Slug Generator** | Text | Generate URL-friendly slugs from any text |
+| **EXIF Inspector** | Security | Analyze image metadata and EXIF data for privacy, technical details, and location information |
+| **APK Analyzer** | Security | Analyze Android APK files for security, permissions, and structure information |
+| **Checksum Tool** | Security | Professional file integrity verification with multiple hash algorithms and batch processing |
+| **Unit Converter** | Utilities | Professional unit conversion with comprehensive categories and precision control |
+| **Random Number Generator** | Generator | Professional random number generation with statistical analysis |
+| **Barcode Generator** | Generator | Generate professional barcodes in multiple formats with customizable options |
 | **UUID Generator** | Generator | Generate RFC 4122 compliant unique identifiers |
 | **QR Code Generator** | Generator | Generate QR codes from text or URLs |
 | **Mock Data Generator** | Generator | Generate fake names, emails, addresses, phones and more |
 | **Base64 Tool** | Encoding | Encode/decode Base64 strings |
 | **URL Tool** | Encoding | Encode/decode URL components |
+| **Timezone Converter** | Web Development | Professional timezone conversion with DST support and global coverage |
+| **Image Resizer & Compressor** | Web Development | Professional image processing with batch operations and format conversion |
+| **Sequence Diagrams** | Web Development | Create PlantUML-style sequence diagrams with live preview and professional rendering |
+| **Flexbox Creator** | Web Development | Create and experiment with flexbox layouts with real-time visual feedback |
+| **Favicon Generator** | Web Development | Create favicons from emojis, text, or images with multiple formats |
 | **Color Picker & Converter** | Web Development | Pick colors and convert between formats |
 | **Number Base Converter** | Data | Convert between binary, octal, decimal, hex |
 | **Timestamp Converter** | Data | Convert between Unix timestamps and dates |
+| **Matrix Calculator** | Mathematics | Perform matrix operations including determinant, inverse, transpose, and more |
+| **ASCII/Unicode Explorer** | Text & Data | Explore ASCII and Unicode characters with detailed information and encoding details |
+| **PWA Manifest Generator** | Web Development | Create and customize Progressive Web App manifests with comprehensive configuration options |
+| **Statistics Calculator** | Mathematics | Calculate descriptive statistics, generate probability distributions, and analyze data with comprehensive statistical tools |
+| **NanoID / ULID Generator** | Generators | Generate unique identifiers using NanoID and ULID algorithms with comprehensive customization options |
+| **Workday Calculator** | Business | Calculate business days, working hours, and project timelines with comprehensive holiday and weekend management |
+| **Password Strength Tester** | Cryptography & Security | Analyze password strength, calculate entropy, and get security recommendations |
 | **Hash Generator** | Cryptography | Generate MD5, SHA-1, SHA-256, SHA-384, SHA-512 hashes |
 | **Password Generator** | Cryptography | Generate secure passwords with strength analysis |
 | **JWT Decoder** | Cryptography | Decode and validate JSON Web Tokens |
