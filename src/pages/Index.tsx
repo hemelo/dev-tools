@@ -51,7 +51,8 @@ import {
   Smartphone,
   Camera,
   GitMerge,
-  Calendar
+  Calendar,
+  Heart
 } from "lucide-react";
 import { useState, useMemo, useEffect, useRef } from "react";
 import { JsonFormatter } from "@/components/tools/JsonFormatter";
@@ -519,6 +520,25 @@ const getCookie = (name: string): string | null => {
   return null;
 };
 
+// Favorites management functions
+const getFavorites = (): string[] => {
+  try {
+    const favorites = localStorage.getItem('devtools_favorites');
+    return favorites ? JSON.parse(favorites) : [];
+  } catch (error) {
+    console.error('Error loading favorites:', error);
+    return [];
+  }
+};
+
+const saveFavorites = (favorites: string[]) => {
+  try {
+    localStorage.setItem('devtools_favorites', JSON.stringify(favorites));
+  } catch (error) {
+    console.error('Error saving favorites:', error);
+  }
+};
+
 const Index = () => {
   const [selectedTool, setSelectedTool] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -526,16 +546,57 @@ const Index = () => {
   const [hasVisitedBefore, setHasVisitedBefore] = useState<boolean>(false);
   const [showWelcomeMessage, setShowWelcomeMessage] = useState<boolean>(false);
   const [hasScrolledInSession, setHasScrolledInSession] = useState<boolean>(false);
+  const [favorites, setFavorites] = useState<string[]>([]);
   const toolsSectionRef = useRef<HTMLElement>(null);
 
   const filteredTools = useMemo(() => {
-    return tools.filter(tool => {
+    const filtered = tools.filter(tool => {
       const matchesSearch = tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                            tool.description.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesCategory = selectedCategory === "All" || tool.category === selectedCategory;
+      
+      let matchesCategory;
+      if (selectedCategory === "All") {
+        matchesCategory = true;
+      } else if (selectedCategory === "Favorites") {
+        matchesCategory = favorites.includes(tool.id);
+      } else {
+        matchesCategory = tool.category === selectedCategory;
+      }
+      
       return matchesSearch && matchesCategory;
     });
-  }, [searchQuery, selectedCategory]);
+
+    // Sort to show favorites first, then by name
+    return filtered.sort((a, b) => {
+      const aIsFavorite = favorites.includes(a.id);
+      const bIsFavorite = favorites.includes(b.id);
+      
+      if (aIsFavorite && !bIsFavorite) return -1;
+      if (!aIsFavorite && bIsFavorite) return 1;
+      
+      // If both are favorites or both are not favorites, sort by name
+      return a.name.localeCompare(b.name);
+    });
+  }, [searchQuery, selectedCategory, favorites]);
+
+  // Load favorites from localStorage on component mount
+  useEffect(() => {
+    setFavorites(getFavorites());
+  }, []);
+
+  // Toggle favorite function
+  const toggleFavorite = (toolId: string, event: React.MouseEvent) => {
+    event.stopPropagation(); // Prevent tool selection when clicking favorite button
+    
+    setFavorites(prevFavorites => {
+      const newFavorites = prevFavorites.includes(toolId)
+        ? prevFavorites.filter(id => id !== toolId)
+        : [...prevFavorites, toolId];
+      
+      saveFavorites(newFavorites);
+      return newFavorites;
+    });
+  };
 
   // Add smooth scroll CSS to the document (only once)
   useEffect(() => {
@@ -818,7 +879,19 @@ const Index = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <Button size="lg" className="text-lg px-8 py-6 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300">
+            <Button 
+              size="lg" 
+              className="text-lg px-8 py-6 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300"
+              onClick={() => {
+                if (toolsSectionRef.current) {
+                  toolsSectionRef.current.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start',
+                    inline: 'nearest'
+                  });
+                }
+              }}
+            >
               <Star className="mr-2 h-5 w-5" />
               Explore Tools
             </Button>
@@ -843,7 +916,7 @@ const Index = () => {
               <div className="text-3xl font-bold text-primary mb-2">100%</div>
               <div className="text-sm text-muted-foreground">Offline First</div>
             </div>
-            <div className="text-center">
+          <div className="text-center">
               <div className="text-3xl font-bold text-primary mb-2">Free</div>
               <div className="text-sm text-muted-foreground">Forever</div>
             </div>
@@ -931,6 +1004,14 @@ const Index = () => {
               </div>
               
               <div className="flex flex-wrap gap-2 justify-center">
+                <Button
+                  variant={selectedCategory === "Favorites" ? "default" : "outline"}
+                  onClick={() => setSelectedCategory("Favorites")}
+                  className="rounded-full"
+                >
+                  <Heart className={`h-4 w-4 mr-2 ${favorites.length > 0 ? 'fill-red-500 text-red-500' : ''}`} />
+                  Favorites ({favorites.length})
+                </Button>
                 {categories.map((category) => (
                   <Button
                     key={category}
@@ -945,24 +1026,40 @@ const Index = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredTools.map((tool) => {
-              const IconComponent = tool.icon;
-              return (
-                <Card 
-                  key={tool.id} 
+            const IconComponent = tool.icon;
+            return (
+              <Card 
+                key={tool.id} 
                   className="hover:shadow-xl transition-all duration-300 cursor-pointer hover:border-primary/50 group hover:-translate-y-1"
-                  onClick={() => setSelectedTool(tool.id)}
-                >
-                  <CardHeader>
-                    <div className="flex items-start justify-between mb-2">
+                onClick={() => setSelectedTool(tool.id)}
+              >
+                <CardHeader>
+                  <div className="flex items-start justify-between mb-2">
                       <div className="p-3 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
                         <IconComponent className="h-6 w-6 text-primary group-hover:scale-110 transition-all duration-200" />
                       </div>
                       <div className="flex flex-col gap-1 items-end">
-                        <Badge variant="secondary" className="text-xs">
-                          {tool.category}
-                        </Badge>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-6 w-6 p-0 hover:bg-transparent"
+                            onClick={(e) => toggleFavorite(tool.id, e)}
+                          >
+                            <Heart 
+                              className={`h-4 w-4 transition-all duration-200 ${
+                                favorites.includes(tool.id) 
+                                  ? 'fill-red-500 text-red-500 scale-110' 
+                                  : 'text-muted-foreground hover:text-red-500 hover:scale-110'
+                              }`} 
+                            />
+                          </Button>
+                    <Badge variant="secondary" className="text-xs">
+                      {tool.category}
+                    </Badge>
+                  </div>
                         {('isNew' in tool && tool.isNew) && (
                           <Badge variant="default" className="text-xs bg-green-500 hover:bg-green-600">
                             NEW
@@ -971,30 +1068,42 @@ const Index = () => {
                       </div>
                     </div>
                     <CardTitle className="group-hover:text-primary transition-colors text-lg">
-                      {tool.name}
-                    </CardTitle>
+                    {tool.name}
+                  </CardTitle>
                     <CardDescription className="text-sm">
-                      {tool.description}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
+                    {tool.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
                     <Button variant="outline" className="w-full group-hover:border-primary group-hover:text-primary group-hover:bg-primary/5 transition-all duration-200">
                       <ArrowRight className="mr-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                      Open Tool
-                    </Button>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
+                    Open Tool
+                  </Button>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
 
           {filteredTools.length === 0 && (
             <div className="text-center py-12">
-              <div className="p-4 rounded-full bg-muted w-fit mx-auto mb-4">
-                <Search className="h-8 w-8 text-muted-foreground" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">No tools found</h3>
-              <p className="text-muted-foreground">Try adjusting your search or filter criteria</p>
+              {selectedCategory === "Favorites" && favorites.length === 0 ? (
+                <>
+                  <div className="p-4 rounded-full bg-muted w-fit mx-auto mb-4">
+                    <Heart className="h-8 w-8 text-muted-foreground" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">No favorites yet</h3>
+                  <p className="text-muted-foreground">Click the heart icon on any tool to add it to your favorites</p>
+                </>
+              ) : (
+                <>
+                  <div className="p-4 rounded-full bg-muted w-fit mx-auto mb-4">
+                    <Search className="h-8 w-8 text-muted-foreground" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">No tools found</h3>
+                  <p className="text-muted-foreground">Try adjusting your search or filter criteria</p>
+                </>
+              )}
             </div>
           )}
         </div>
