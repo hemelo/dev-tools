@@ -972,8 +972,8 @@ const Index = () => {
                     <Card className="h-full">
                 <CardHeader>
                   <div className="flex items-start justify-between mb-2">
-                      <div className="p-3 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors" aria-hidden="true">
-                        <IconComponent className="h-6 w-6 text-primary group-hover:scale-110 transition-all duration-200" />
+                      <div className="p-3 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                        <IconComponent className="h-6 w-6 text-primary group-hover:scale-110 transition-all duration-200" aria-hidden="true" />
                       </div>
                       <div className="flex flex-col gap-1 items-end">
                         <div className="flex items-center gap-2">
