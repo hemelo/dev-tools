@@ -722,8 +722,25 @@ const Index = () => {
         keywords="developer tools, json formatter, uuid generator, base64 encoder, url encoder, hash generator, password generator, qr code generator, free tools, online tools, web development, programming tools"
         canonical="https://devtools.hemelo.fyi"
       />
+      
+      {/* Skip Navigation Links */}
+      <nav className="sr-only focus-within:not-sr-only" aria-label="Skip navigation">
+        <a 
+          href="#main-content" 
+          className="absolute top-4 left-4 z-50 bg-primary text-primary-foreground px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+        >
+          Skip to main content
+        </a>
+        <a 
+          href="#tools-section" 
+          className="absolute top-16 left-4 z-50 bg-primary text-primary-foreground px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+        >
+          Skip to tools
+        </a>
+      </nav>
+
       {/* Hero Section with Stunning Background */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden" aria-label="Hero section">
         {/* Animated Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-primary/10">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/30 via-transparent to-transparent opacity-40"></div>
@@ -735,20 +752,22 @@ const Index = () => {
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
-          <div className="flex items-center justify-center gap-4 mb-8">
-            <div className="p-3 rounded-2xl bg-primary/10 border border-primary/20">
-              <Code2 className="h-12 w-12 text-primary" />
+        <main id="main-content" className="relative z-10 text-center max-w-4xl mx-auto px-4">
+          <header className="mb-8">
+            <div className="flex items-center justify-center gap-4 mb-8">
+              <div className="p-3 rounded-2xl bg-primary/10 border border-primary/20" aria-hidden="true">
+                <Code2 className="h-12 w-12 text-primary" />
+              </div>
+              <h1 className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+                DevTools Hub
+              </h1>
             </div>
-            <h1 className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-              DevTools Hub
-            </h1>
-          </div>
-          
-          <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
-            The ultimate collection of developer tools for modern web development. 
-            <span className="text-primary font-semibold"> Fast, secure, and works offline</span>.
-          </p>
+            
+            <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
+              The ultimate collection of developer tools for modern web development. 
+              <span className="text-primary font-semibold"> Fast, secure, and works offline</span>.
+            </p>
+          </header>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
             <Button 
@@ -763,8 +782,9 @@ const Index = () => {
                   });
                 }
               }}
+              aria-label="Scroll to developer tools section"
             >
-              <Star className="mr-2 h-5 w-5" />
+              <Star className="mr-2 h-5 w-5" aria-hidden="true" />
               Explore Tools
             </Button>
             <Button 
@@ -772,88 +792,89 @@ const Index = () => {
               size="lg" 
               className="text-lg px-8 py-6 rounded-xl border-primary/50 hover:bg-primary/10 hover:border-primary transition-all duration-300"
               onClick={() => window.open('https://github.com/hemelo/dev-tools', '_blank')}
+              aria-label="View project on GitHub (opens in new tab)"
             >
-              <Github className="mr-2 h-5 w-5" />
+              <Github className="mr-2 h-5 w-5" aria-hidden="true" />
               View GitHub
             </Button>
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
+          <section aria-label="Platform statistics" className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
             <div className="text-center">
-              <div className="text-3xl font-bold text-primary mb-2">{tools.length}+</div>
+              <div className="text-3xl font-bold text-primary mb-2" aria-label={`${tools.length} plus`}>{tools.length}+</div>
               <div className="text-sm text-muted-foreground">Developer Tools</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-primary mb-2">100%</div>
+              <div className="text-3xl font-bold text-primary mb-2" aria-label="100 percent">100%</div>
               <div className="text-sm text-muted-foreground">Offline First</div>
             </div>
-          <div className="text-center">
+            <div className="text-center">
               <div className="text-3xl font-bold text-primary mb-2">Free</div>
               <div className="text-sm text-muted-foreground">Forever</div>
             </div>
-          </div>
-        </div>
+          </section>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <ArrowRight className="h-6 w-6 text-primary rotate-90" />
-        </div>
+          {/* Scroll Indicator */}
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce" aria-hidden="true">
+            <ArrowRight className="h-6 w-6 text-primary rotate-90" />
+          </div>
+        </main>
       </section>
 
       {/* Benefits Section */}
-      <section className="py-20 bg-gradient-to-b from-background to-card/50">
+      <section className="py-20 bg-gradient-to-b from-background to-card/50" aria-labelledby="benefits-heading">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Why Choose DevTools Hub?</h2>
+          <header className="text-center mb-16">
+            <h2 id="benefits-heading" className="text-4xl font-bold mb-4">Why Choose DevTools Hub?</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Built by developers, for developers. Experience the difference with our comprehensive tool suite.
             </p>
-          </div>
+          </header>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Card className="text-center p-8 hover:shadow-xl transition-all duration-300 hover:border-primary/50 group">
-              <div className="p-4 rounded-full bg-primary/10 w-fit mx-auto mb-6 group-hover:bg-primary/20 transition-colors">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" role="list" aria-label="Platform benefits">
+            <article className="text-center p-8 hover:shadow-xl transition-all duration-300 hover:border-primary/50 group" role="listitem">
+              <div className="p-4 rounded-full bg-primary/10 w-fit mx-auto mb-6 group-hover:bg-primary/20 transition-colors" aria-hidden="true">
                 <Globe className="h-8 w-8 text-primary" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Works Offline</h3>
               <p className="text-muted-foreground">All processing happens locally in your browser. No internet required.</p>
-            </Card>
+            </article>
 
-            <Card className="text-center p-8 hover:shadow-xl transition-all duration-300 hover:border-primary/50 group">
-              <div className="p-4 rounded-full bg-primary/10 w-fit mx-auto mb-6 group-hover:bg-primary/20 transition-colors">
+            <article className="text-center p-8 hover:shadow-xl transition-all duration-300 hover:border-primary/50 group" role="listitem">
+              <div className="p-4 rounded-full bg-primary/10 w-fit mx-auto mb-6 group-hover:bg-primary/20 transition-colors" aria-hidden="true">
                 <Shield className="h-8 w-8 text-primary" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Privacy First</h3>
               <p className="text-muted-foreground">Your data never leaves your browser. Complete privacy guaranteed.</p>
-            </Card>
+            </article>
 
-            <Card className="text-center p-8 hover:shadow-xl transition-all duration-300 hover:border-primary/50 group">
-              <div className="p-4 rounded-full bg-primary/10 w-fit mx-auto mb-6 group-hover:bg-primary/20 transition-colors">
+            <article className="text-center p-8 hover:shadow-xl transition-all duration-300 hover:border-primary/50 group" role="listitem">
+              <div className="p-4 rounded-full bg-primary/10 w-fit mx-auto mb-6 group-hover:bg-primary/20 transition-colors" aria-hidden="true">
                 <Zap className="h-8 w-8 text-primary" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Lightning Fast</h3>
               <p className="text-muted-foreground">Optimized for speed. Get results instantly without any delays.</p>
-            </Card>
+            </article>
 
-            <Card className="text-center p-8 hover:shadow-xl transition-all duration-300 hover:border-primary/50 group">
-              <div className="p-4 rounded-full bg-primary/10 w-fit mx-auto mb-6 group-hover:bg-primary/20 transition-colors">
+            <article className="text-center p-8 hover:shadow-xl transition-all duration-300 hover:border-primary/50 group" role="listitem">
+              <div className="p-4 rounded-full bg-primary/10 w-fit mx-auto mb-6 group-hover:bg-primary/20 transition-colors" aria-hidden="true">
                 <Users className="h-8 w-8 text-primary" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Community Driven</h3>
               <p className="text-muted-foreground">Built by developers, for developers. Open source and always improving.</p>
-            </Card>
+            </article>
           </div>
         </div>
       </section>
 
       {/* Tools Section */}
-      <section ref={toolsSectionRef} className="py-20 bg-gradient-to-b from-card/50 to-background">
+      <section ref={toolsSectionRef} id="tools-section" className="py-20 bg-gradient-to-b from-card/50 to-background" aria-labelledby="tools-heading">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Developer Tools</h2>
+          <header className="text-center mb-16">
+            <h2 id="tools-heading" className="text-4xl font-bold mb-4">Developer Tools</h2>
             {showWelcomeMessage && (
-              <div className="mb-4 animate-in fade-in duration-500">
+              <div className="mb-4 animate-in fade-in duration-500" role="status" aria-live="polite">
                 <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
                   Welcome back! 🎉
                 </Badge>
@@ -866,28 +887,36 @@ const Index = () => {
             {/* Search and Filter */}
             <div className="max-w-2xl mx-auto mb-8">
               <div className="relative mb-4">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <label htmlFor="tool-search" className="sr-only">Search developer tools</label>
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" aria-hidden="true" />
                 <Input
+                  id="tool-search"
                   ref={searchInputRef}
                   placeholder="Search tools... (Ctrl+K to focus)"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-10 pr-4 py-3 text-lg rounded-xl border-primary/20 focus:border-primary"
+                  aria-describedby="search-help"
                 />
-                <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                <div className="absolute right-3 top-1/2 transform -translate-y-1/2" aria-hidden="true">
                   <kbd className="text-xs px-2 py-1 bg-muted rounded text-muted-foreground">
                     /
                   </kbd>
                 </div>
               </div>
+              <div id="search-help" className="sr-only">
+                Use the search field to find developer tools by name or description. Press Ctrl+K to focus the search field.
+              </div>
               
-              <div className="flex flex-wrap gap-2 justify-center items-center">
+              <div className="flex flex-wrap gap-2 justify-center items-center" role="group" aria-label="Filter tools by category">
                 <Button
                   variant={selectedCategory === "Favorites" ? "default" : "outline"}
                   onClick={() => setSelectedCategory("Favorites")}
                   className="rounded-full"
+                  aria-pressed={selectedCategory === "Favorites"}
+                  aria-label={`Show favorites (${favorites.length} tools)`}
                 >
-                  <Heart className={`h-4 w-4 mr-2 ${favorites.length > 0 ? 'fill-red-500 text-red-500' : ''}`} />
+                  <Heart className={`h-4 w-4 mr-2 ${favorites.length > 0 ? 'fill-red-500 text-red-500' : ''}`} aria-hidden="true" />
                   Favorites ({favorites.length})
                 </Button>
                 {categories.map((category) => (
@@ -896,34 +925,54 @@ const Index = () => {
                     variant={selectedCategory === category ? "default" : "outline"}
                     onClick={() => setSelectedCategory(category)}
                     className="rounded-full"
+                    aria-pressed={selectedCategory === category}
+                    aria-label={`Filter by ${category} category`}
                   >
                     {category}
                   </Button>
                 ))}
               </div>
             </div>
+          </header>
+
+          {/* Screen reader announcement for filtered results */}
+          <div className="sr-only" aria-live="polite" aria-atomic="true">
+            {filteredTools.length === 0 
+              ? "No tools found matching your search criteria" 
+              : `Showing ${filteredTools.length} developer tool${filteredTools.length === 1 ? '' : 's'}`
+            }
           </div>
 
-        <LoadingWrapper
-          isLoading={isToolsLoading}
-          skeleton={<ToolGridSkeleton count={filteredTools.length || 9} />}
-        >
-          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <LoadingWrapper
+            isLoading={isToolsLoading}
+            skeleton={<ToolGridSkeleton count={filteredTools.length || 9} />}
+          >
+            <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" aria-label="Developer tools grid">
             {filteredTools.map((tool, index) => {
             const IconComponent = tool.icon;
             return (
               <StaggerItem key={tool.id}>
-                <div
+                <article
                   className={`hover:shadow-xl transition-all duration-300 cursor-pointer hover:border-primary/50 group ${
                     selectedToolIndex === index ? 'ring-2 ring-primary border-primary/50' : ''
                   }`}
                   onClick={() => handleToolClick(tool.id)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      handleToolClick(tool.id);
+                    }
+                  }}
+                  tabIndex={0}
+                  role="button"
+                  aria-label={`Open ${tool.name} tool - ${tool.description}`}
+                  aria-describedby={`tool-${tool.id}-description`}
                 >
                   <AnimatedToolCard>
                     <Card className="h-full">
                 <CardHeader>
                   <div className="flex items-start justify-between mb-2">
-                      <div className="p-3 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                      <div className="p-3 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors" aria-hidden="true">
                         <IconComponent className="h-6 w-6 text-primary group-hover:scale-110 transition-all duration-200" />
                       </div>
                       <div className="flex flex-col gap-1 items-end">
@@ -933,6 +982,7 @@ const Index = () => {
                             size="sm"
                             className="h-6 w-6 p-0 hover:bg-transparent"
                             onClick={(e) => toggleFavorite(tool.id, e)}
+                            aria-label={favorites.includes(tool.id) ? `Remove ${tool.name} from favorites` : `Add ${tool.name} to favorites`}
                           >
                             <Heart 
                               className={`h-4 w-4 transition-all duration-200 ${
@@ -940,14 +990,15 @@ const Index = () => {
                                   ? 'fill-red-500 text-red-500 scale-110' 
                                   : 'text-muted-foreground hover:text-red-500 hover:scale-110'
                               }`} 
+                              aria-hidden="true"
                             />
                           </Button>
-                    <Badge variant="secondary" className="text-xs">
+                    <Badge variant="secondary" className="text-xs" aria-label={`Category: ${tool.category}`}>
                       {tool.category}
                     </Badge>
                   </div>
                         {('isNew' in tool && tool.isNew) && (
-                          <Badge variant="default" className="text-xs bg-green-500 hover:bg-green-600">
+                          <Badge variant="default" className="text-xs bg-green-500 hover:bg-green-600" aria-label="New tool">
                             NEW
                           </Badge>
                         )}
@@ -956,30 +1007,34 @@ const Index = () => {
                     <CardTitle className="group-hover:text-primary transition-colors text-lg">
                     {tool.name}
                   </CardTitle>
-                    <CardDescription className="text-sm">
+                    <CardDescription id={`tool-${tool.id}-description`} className="text-sm">
                     {tool.description}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <Button variant="outline" className="w-full group-hover:border-primary group-hover:text-primary group-hover:bg-primary/5 transition-all duration-200">
-                      <ArrowRight className="mr-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    <Button 
+                      variant="outline" 
+                      className="w-full group-hover:border-primary group-hover:text-primary group-hover:bg-primary/5 transition-all duration-200"
+                      aria-label={`Open ${tool.name} tool`}
+                    >
+                      <ArrowRight className="mr-2 h-4 w-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
                     Open Tool
                   </Button>
                 </CardContent>
               </Card>
                   </AnimatedToolCard>
-                </div>
+                </article>
               </StaggerItem>
             );
           })}
-          </StaggerContainer>
-        </LoadingWrapper>
+            </StaggerContainer>
+          </LoadingWrapper>
 
           {filteredTools.length === 0 && (
-            <div className="text-center py-12">
+            <div className="text-center py-12" role="status" aria-live="polite">
               {selectedCategory === "Favorites" && favorites.length === 0 ? (
                 <>
-                  <div className="p-4 rounded-full bg-muted w-fit mx-auto mb-4">
+                  <div className="p-4 rounded-full bg-muted w-fit mx-auto mb-4" aria-hidden="true">
                     <Heart className="h-8 w-8 text-muted-foreground" />
                   </div>
                   <h3 className="text-xl font-semibold mb-2">No favorites yet</h3>
@@ -987,7 +1042,7 @@ const Index = () => {
                 </>
               ) : (
                 <>
-                  <div className="p-4 rounded-full bg-muted w-fit mx-auto mb-4">
+                  <div className="p-4 rounded-full bg-muted w-fit mx-auto mb-4" aria-hidden="true">
                     <Search className="h-8 w-8 text-muted-foreground" />
                   </div>
                   <h3 className="text-xl font-semibold mb-2">No tools found</h3>
@@ -1000,26 +1055,27 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-card border-t border-border py-16">
+      <footer className="bg-card border-t border-border py-16" role="contentinfo">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-4">
-                <Code2 className="h-8 w-8 text-primary" />
+                <Code2 className="h-8 w-8 text-primary" aria-hidden="true" />
                 <h3 className="text-2xl font-bold">DevTools Hub</h3>
               </div>
               <p className="text-muted-foreground mb-6 max-w-md">
                 The ultimate collection of developer tools for modern web development. 
                 Built with ❤️ by developers who understand your needs.
               </p>
-              <div className="flex gap-4 flex-wrap">
+              <div className="flex gap-4 flex-wrap" role="group" aria-label="Social media links">
                 <Button 
                   variant="outline" 
                   size="sm" 
                   className="rounded-full hover:bg-primary/10 hover:border-primary transition-all duration-200"
                   onClick={() => window.open('https://github.com/hemelo/dev-tools', '_blank')}
+                  aria-label="View project on GitHub (opens in new tab)"
                 >
-                  <Github className="h-4 w-4 mr-2" />
+                  <Github className="h-4 w-4 mr-2" aria-hidden="true" />
                   GitHub
                 </Button>
                 <Button 
@@ -1027,8 +1083,9 @@ const Index = () => {
                   size="sm" 
                   className="rounded-full hover:bg-primary/10 hover:border-primary transition-all duration-200"
                   onClick={() => window.open('https://x.com/hemelodev', '_blank')}
+                  aria-label="Follow on Twitter (opens in new tab)"
                 >
-                  <Twitter className="h-4 w-4 mr-2" />
+                  <Twitter className="h-4 w-4 mr-2" aria-hidden="true" />
                   Twitter
                 </Button>
                 <Button 
@@ -1036,8 +1093,9 @@ const Index = () => {
                   size="sm" 
                   className="rounded-full hover:bg-primary/10 hover:border-primary transition-all duration-200"
                   onClick={() => window.open('https://www.linkedin.com/in/henriquefcmelo/', '_blank')}
+                  aria-label="Connect on LinkedIn (opens in new tab)"
                 >
-                  <Linkedin className="h-4 w-4 mr-2" />
+                  <Linkedin className="h-4 w-4 mr-2" aria-hidden="true" />
                   LinkedIn
                 </Button>
                 <Button 
@@ -1045,76 +1103,81 @@ const Index = () => {
                   size="sm" 
                   className="rounded-full hover:bg-primary/10 hover:border-primary transition-all duration-200"
                   onClick={() => window.open('mailto:hemelo@pm.me', '_blank')}
+                  aria-label="Send email (opens in new tab)"
                 >
-                  <Mail className="h-4 w-4 mr-2" />
+                  <Mail className="h-4 w-4 mr-2" aria-hidden="true" />
                   Email
                 </Button>
               </div>
             </div>
 
-            <div>
-              <h4 className="font-semibold mb-4">Tools</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-primary transition-colors">JSON Tools</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Cryptography</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Web Development</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Data Analysis</a></li>
+            <nav aria-labelledby="tools-heading-footer">
+              <h4 id="tools-heading-footer" className="font-semibold mb-4">Tools</h4>
+              <ul className="space-y-2 text-sm text-muted-foreground" role="list">
+                <li><a href="#" className="hover:text-primary transition-colors" aria-label="View JSON tools">JSON Tools</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors" aria-label="View cryptography tools">Cryptography</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors" aria-label="View web development tools">Web Development</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors" aria-label="View data analysis tools">Data Analysis</a></li>
               </ul>
-            </div>
+            </nav>
 
-            <div>
-              <h4 className="font-semibold mb-4">Developer</h4>
-              <div className="space-y-3 text-sm text-muted-foreground">
+            <nav aria-labelledby="developer-heading-footer">
+              <h4 id="developer-heading-footer" className="font-semibold mb-4">Developer</h4>
+              <div className="space-y-3 text-sm text-muted-foreground" role="list">
                 <div className="flex items-center gap-2">
-                  <Github className="h-4 w-4" />
+                  <Github className="h-4 w-4" aria-hidden="true" />
                   <a 
                     href="https://github.com/hemelo" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="hover:text-primary transition-colors cursor-pointer"
+                    aria-label="View GitHub profile (opens in new tab)"
                   >
                     GitHub Profile
                   </a>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Twitter className="h-4 w-4" />
+                  <Twitter className="h-4 w-4" aria-hidden="true" />
                   <a 
                     href="https://x.com/hemelodev" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="hover:text-primary transition-colors cursor-pointer"
+                    aria-label="View Twitter profile (opens in new tab)"
                   >
                     Twitter Profile
                   </a>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Linkedin className="h-4 w-4" />
+                  <Linkedin className="h-4 w-4" aria-hidden="true" />
                   <a 
                     href="https://www.linkedin.com/in/henriquefcmelo/" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="hover:text-primary transition-colors cursor-pointer"
+                    aria-label="View LinkedIn profile (opens in new tab)"
                   >
                     LinkedIn Profile
                   </a>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Mail className="h-4 w-4" />
+                  <Mail className="h-4 w-4" aria-hidden="true" />
                   <a 
                     href="mailto:henrique@hemelo.fyi" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="hover:text-primary transition-colors cursor-pointer"
+                    aria-label="Send email to hemelo@pm.me (opens in new tab)"
                   >
                     hemelo@pm.me
                   </a>
                 </div>
               </div>
-            </div>
+            </nav>
           </div>
 
           <div className="border-t border-border pt-8 text-center text-sm text-muted-foreground">
-            <p>&copy; 2025 DevTools Hub by <a href="https://github.com/hemelo" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">@hemelo</a>. Built with React, TypeScript, and Tailwind CSS. Open source and free forever.</p>
+            <p>&copy; 2025 DevTools Hub by <a href="https://github.com/hemelo" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline" aria-label="View @hemelo's GitHub profile (opens in new tab)">@hemelo</a>. Built with React, TypeScript, and Tailwind CSS. Open source and free forever.</p>
           </div>
         </div>
       </footer>
