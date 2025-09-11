@@ -118,7 +118,7 @@ interface UnicodeBlock {
   icon: any;
 }
 
-export const ASCIIUnicodeExplorer = () => {
+const ASCIIUnicodeExplorer = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedBlock, setSelectedBlock] = useState("all");
@@ -890,3 +890,5 @@ export const ASCIIUnicodeExplorer = () => {
     </div>
   );
 };
+
+export default ASCIIUnicodeExplorer;

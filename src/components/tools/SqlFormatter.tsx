@@ -18,7 +18,7 @@ interface SqlStats {
   complexity: string;
 }
 
-export const SqlFormatter = () => {
+const SqlFormatter = () => {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [isValid, setIsValid] = useState<boolean | null>(null);

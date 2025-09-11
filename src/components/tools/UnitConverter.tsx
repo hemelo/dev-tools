@@ -682,7 +682,7 @@ const COMMON_CONVERSIONS = [
   }
 ];
 
-export const UnitConverter = () => {
+const UnitConverter = () => {
   const [selectedCategory, setSelectedCategory] = useState('length');
   const [fromValue, setFromValue] = useState('');
   const [fromUnit, setFromUnit] = useState('');
@@ -1307,3 +1307,5 @@ export const UnitConverter = () => {
     </div>
   );
 };
+
+export default UnitConverter;

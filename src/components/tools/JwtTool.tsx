@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Copy, Check, Key, AlertCircle, Shield, Clock, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-export const JwtTool = () => {
+const JwtTool = () => {
   const [jwtToken, setJwtToken] = useState("");
   const [decodedHeader, setDecodedHeader] = useState("");
   const [decodedPayload, setDecodedPayload] = useState("");
@@ -389,3 +389,5 @@ export const JwtTool = () => {
     </div>
   );
 };
+
+export default JwtTool;

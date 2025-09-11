@@ -145,7 +145,7 @@ interface SampleData {
   color: string;
 }
 
-export const StatisticsCalculator = () => {
+const StatisticsCalculator = () => {
   const [inputData, setInputData] = useState("");
   const [sampleSize, setSampleSize] = useState(1000);
   const [selectedDistribution, setSelectedDistribution] = useState<keyof DistributionParams>("normal");
@@ -971,3 +971,5 @@ export const StatisticsCalculator = () => {
     </div>
   );
 };
+
+export default StatisticsCalculator;

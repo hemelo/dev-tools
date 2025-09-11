@@ -55,7 +55,7 @@ type MatrixResult =
   | { type: 'array'; value: number[] }
   | { type: 'error'; message: string };
 
-export const MatrixCalculator = () => {
+const MatrixCalculator = () => {
   const [matrixA, setMatrixA] = useState<MatrixData>({
     rows: 3,
     cols: 3,
@@ -1329,3 +1329,5 @@ export const MatrixCalculator = () => {
     </div>
   );
 };
+
+export default MatrixCalculator;

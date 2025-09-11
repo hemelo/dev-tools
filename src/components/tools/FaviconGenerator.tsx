@@ -66,7 +66,7 @@ const POPULAR_EMOJIS = [
   "🏆", "🎭", "🎵", "🎮", "📚", "🔍", "📝", "💼", "🏠", "🌍"
 ];
 
-export const FaviconGenerator = () => {
+const FaviconGenerator = () => {
   const [inputType, setInputType] = useState<"emoji" | "text" | "image">("emoji");
   const [emoji, setEmoji] = useState("🚀");
   const [text, setText] = useState("A");
@@ -748,3 +748,5 @@ export const FaviconGenerator = () => {
     </div>
   );
 };
+
+export default FaviconGenerator;

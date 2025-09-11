@@ -146,7 +146,7 @@ interface CommonPassword {
   frequency: number;
 }
 
-export const PasswordStrengthTester = () => {
+const PasswordStrengthTester = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -739,3 +739,5 @@ export const PasswordStrengthTester = () => {
     </div>
   );
 };
+
+export default PasswordStrengthTester;

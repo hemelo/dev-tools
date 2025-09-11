@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Copy, Check, RefreshCw, Shield, Key, Lock, User, Zap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-export const PasswordGenerator = () => {
+const PasswordGenerator = () => {
   const [password, setPassword] = useState("");
   const [length, setLength] = useState([16]);
   const [includeUppercase, setIncludeUppercase] = useState(true);
@@ -550,3 +550,5 @@ export const PasswordGenerator = () => {
     </div>
   );
 };
+
+export default PasswordGenerator;

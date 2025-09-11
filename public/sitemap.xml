@@ -1,219 +1,327 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-  
-  <!-- Homepage -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://devtools.hemelo.fyi/</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
+    <loc>https://devtools.hemelo.fyi</loc>
+    <lastmod>2025-09-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-  
-  <!-- Tool Pages (if you plan to have individual pages for each tool) -->
   <url>
-    <loc>https://devtools.hemelo.fyi/#json</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
-  <url>
-    <loc>https://devtools.hemelo.fyi/#uuid</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
-  <url>
-    <loc>https://devtools.hemelo.fyi/#base64</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
-  <url>
-    <loc>https://devtools.hemelo.fyi/#url</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
-  <url>
-    <loc>https://devtools.hemelo.fyi/#hash</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
-  <url>
-    <loc>https://devtools.hemelo.fyi/#password</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
-  <url>
-    <loc>https://devtools.hemelo.fyi/#jwt</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
-  <url>
-    <loc>https://devtools.hemelo.fyi/#hmac</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
-  <url>
-    <loc>https://devtools.hemelo.fyi/#aes</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
-  <url>
-    <loc>https://devtools.hemelo.fyi/#csv-json</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
+    <loc>https://devtools.hemelo.fyi/tools/json-formatter</loc>
+    <lastmod>2025-09-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  
   <url>
-    <loc>https://devtools.hemelo.fyi/#color-picker</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
+    <loc>https://devtools.hemelo.fyi/tools/csv-json-converter</loc>
+    <lastmod>2025-09-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  
   <url>
-    <loc>https://devtools.hemelo.fyi/#number-base</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
+    <loc>https://devtools.hemelo.fyi/tools/yaml-json-converter</loc>
+    <lastmod>2025-09-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  
   <url>
-    <loc>https://devtools.hemelo.fyi/#timestamp</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
+    <loc>https://devtools.hemelo.fyi/tools/xml-formatter</loc>
+    <lastmod>2025-09-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  
   <url>
-    <loc>https://devtools.hemelo.fyi/#case-converter</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
+    <loc>https://devtools.hemelo.fyi/tools/text-case-converter</loc>
+    <lastmod>2025-09-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  
   <url>
-    <loc>https://devtools.hemelo.fyi/#regex-tester</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
+    <loc>https://devtools.hemelo.fyi/tools/text-diff-tool</loc>
+    <lastmod>2025-09-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  
   <url>
-    <loc>https://devtools.hemelo.fyi/#qr-code</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
+    <loc>https://devtools.hemelo.fyi/tools/regex-tester</loc>
+    <lastmod>2025-09-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  
   <url>
-    <loc>https://devtools.hemelo.fyi/#text-diff</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
+    <loc>https://devtools.hemelo.fyi/tools/sql-formatter</loc>
+    <lastmod>2025-09-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  
   <url>
-    <loc>https://devtools.hemelo.fyi/#yaml-json</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
+    <loc>https://devtools.hemelo.fyi/tools/slug-generator</loc>
+    <lastmod>2025-09-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  
   <url>
-    <loc>https://devtools.hemelo.fyi/#xml-formatter</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
+    <loc>https://devtools.hemelo.fyi/tools/uuid-generator</loc>
+    <lastmod>2025-09-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  
   <url>
-    <loc>https://devtools.hemelo.fyi/#data-visualizer</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
+    <loc>https://devtools.hemelo.fyi/tools/qr-code-generator</loc>
+    <lastmod>2025-09-11</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
-  
   <url>
-    <loc>https://devtools.hemelo.fyi/#ip-geolocation</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
+    <loc>https://devtools.hemelo.fyi/tools/base64-encoder-decoder</loc>
+    <lastmod>2025-09-11</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
-  
   <url>
-    <loc>https://devtools.hemelo.fyi/#markdown-editor</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
+    <loc>https://devtools.hemelo.fyi/tools/url-encoder-decoder</loc>
+    <lastmod>2025-09-11</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
-  
   <url>
-    <loc>https://devtools.hemelo.fyi/#css-gradient-generator</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
+    <loc>https://devtools.hemelo.fyi/tools/color-picker-converter</loc>
+    <lastmod>2025-09-11</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
-  
   <url>
-    <loc>https://devtools.hemelo.fyi/#api-tester</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
+    <loc>https://devtools.hemelo.fyi/tools/number-base-converter</loc>
+    <lastmod>2025-09-11</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
-  
   <url>
-    <loc>https://devtools.hemelo.fyi/#json-schema-generator</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
+    <loc>https://devtools.hemelo.fyi/tools/timestamp-converter</loc>
+    <lastmod>2025-09-11</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
-  
   <url>
-    <loc>https://devtools.hemelo.fyi/#dns-lookup</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
+    <loc>https://devtools.hemelo.fyi/tools/hash-generator</loc>
+    <lastmod>2025-09-11</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
-  
   <url>
-    <loc>https://devtools.hemelo.fyi/#lorem-ipsum-generator</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
+    <loc>https://devtools.hemelo.fyi/tools/password-generator</loc>
+    <lastmod>2025-09-11</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
-  
   <url>
-    <loc>https://devtools.hemelo.fyi/#color-palette-generator</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
+    <loc>https://devtools.hemelo.fyi/tools/jwt-decoder</loc>
+    <lastmod>2025-09-11</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
-  
   <url>
-    <loc>https://devtools.hemelo.fyi/#git-commit-generator</loc>
-    <lastmod>2024-12-19T00:00:00+00:00</lastmod>
+    <loc>https://devtools.hemelo.fyi/tools/hmac-generator</loc>
+    <lastmod>2025-09-11</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
-  
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/aes-encryption</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/data-visualizer</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/ip-geolocation</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/markdown-editor</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/css-gradient-generator</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/api-tester</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/json-schema-generator</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/dns-lookup</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/lorem-ipsum-generator</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/color-palette-generator</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/git-commit-generator</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/curl-command-generator</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/subnet-calculator</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/ssl-tls-checker</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/cron-expression-generator</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/mock-data-generator</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/favicon-generator</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/flexbox-creator</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/timezone-converter</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/random-number-generator</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/unit-converter</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/checksum-tool</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/apk-analyzer</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/exif-inspector</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/barcode-generator</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/sequence-diagrams</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/matrix-calculator</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/ascii-unicode-explorer</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/pwa-manifest-generator</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/statistics-calculator</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/nanoid-ulid-generator</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/workday-calculator</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://devtools.hemelo.fyi/tools/password-strength-tester</loc>
+    <lastmod>2025-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>

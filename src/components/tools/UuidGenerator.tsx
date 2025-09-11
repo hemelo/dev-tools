@@ -15,7 +15,7 @@ const generateUUID = () => {
   });
 };
 
-export const UuidGenerator = () => {
+const UuidGenerator = () => {
   const [currentUuid, setCurrentUuid] = useState("");
   const [uuidHistory, setUuidHistory] = useState<string[]>([]);
   const [copiedUuid, setCopiedUuid] = useState<string | null>(null);
@@ -334,3 +334,5 @@ export const UuidGenerator = () => {
     </div>
   );
 };
+
+export default UuidGenerator;

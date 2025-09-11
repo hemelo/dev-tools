@@ -167,7 +167,7 @@ interface DateRange {
   workingHours: number;
 }
 
-export const WorkdayCalculator = () => {
+const WorkdayCalculator = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [daysToAdd, setDaysToAdd] = useState(5);
@@ -936,3 +936,5 @@ export const WorkdayCalculator = () => {
     </div>
   );
 };
+
+export default WorkdayCalculator;

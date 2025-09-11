@@ -58,7 +58,7 @@ interface BarcodeTemplate {
   config: Partial<BarcodeConfig>;
 }
 
-export const BarcodeGenerator = () => {
+const BarcodeGenerator = () => {
   const [input, setInput] = useState("");
   const [config, setConfig] = useState<BarcodeConfig>({
     format: "CODE128",
@@ -699,4 +699,6 @@ export const BarcodeGenerator = () => {
     </div>
   );
 };
+
+export default BarcodeGenerator;
 

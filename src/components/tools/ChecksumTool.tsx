@@ -225,7 +225,7 @@ const FILE_TYPE_ICONS: Record<string, any> = {
   'default': File
 };
 
-export const ChecksumTool = () => {
+const ChecksumTool = () => {
   const [files, setFiles] = useState<ChecksumFile[]>([]);
   const [selectedAlgorithms, setSelectedAlgorithms] = useState<string[]>(['sha256']);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -1170,3 +1170,5 @@ export const ChecksumTool = () => {
     </div>
   );
 };
+
+export default ChecksumTool;

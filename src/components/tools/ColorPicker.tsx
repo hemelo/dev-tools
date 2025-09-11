@@ -14,7 +14,7 @@ interface ColorValues {
   cmyk: { c: number; m: number; y: number; k: number };
 }
 
-export const ColorPicker = () => {
+const ColorPicker = () => {
   const [color, setColor] = useState("#3b82f6");
   const [colorValues, setColorValues] = useState<ColorValues>({
     hex: "#3b82f6",
@@ -471,3 +471,5 @@ export const ColorPicker = () => {
     </div>
   );
 };
+
+export default ColorPicker;

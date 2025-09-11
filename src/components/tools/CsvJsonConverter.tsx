@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Copy, Check, AlertCircle, CheckCircle, ArrowRightLeft, FileText, Table } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-export const CsvJsonConverter = () => {
+const CsvJsonConverter = () => {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [conversionType, setConversionType] = useState<"csv-to-json" | "json-to-csv">("csv-to-json");
@@ -453,3 +453,5 @@ export const CsvJsonConverter = () => {
     </div>
   );
 };
+
+export default CsvJsonConverter;

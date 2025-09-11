@@ -16,7 +16,7 @@ interface JsonStats {
   types: Record<string, number>;
 }
 
-export const JsonFormatter = () => {
+const JsonFormatter = () => {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [isValid, setIsValid] = useState<boolean | null>(null);
@@ -492,3 +492,5 @@ export const JsonFormatter = () => {
     </div>
   );
 };
+
+export default JsonFormatter;

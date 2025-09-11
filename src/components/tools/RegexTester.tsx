@@ -23,7 +23,7 @@ interface RegexResult {
   replaced: string;
 }
 
-export const RegexTester = () => {
+const RegexTester = () => {
   const [pattern, setPattern] = useState("");
   const [testString, setTestString] = useState("");
   const [flags, setFlags] = useState({
@@ -509,3 +509,5 @@ export const RegexTester = () => {
     </div>
   );
 };
+
+export default RegexTester;

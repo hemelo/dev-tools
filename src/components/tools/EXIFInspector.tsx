@@ -210,7 +210,7 @@ const PRIVACY_RISKS = {
   CopyrightInfo: "Copyright information can reveal ownership details"
 };
 
-export const EXIFInspector = () => {
+const EXIFInspector = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [exifData, setExifData] = useState<EXIFData | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -1115,3 +1115,5 @@ export const EXIFInspector = () => {
     </div>
   );
 };
+
+export default EXIFInspector;

@@ -1,46 +1,13 @@
-# Robots.txt for DevTools Hub
-# https://devtools.hemelo.fyi
-
-# Allow all search engines to crawl the site
 User-agent: *
 Allow: /
 
-# Specific directives for major search engines
-User-agent: Googlebot
-Allow: /
-Crawl-delay: 1
-
-User-agent: Bingbot
-Allow: /
-Crawl-delay: 1
-
-User-agent: Slurp
-Allow: /
-Crawl-delay: 1
-
-# Social media crawlers
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
-User-agent: LinkedInBot
-Allow: /
-
-User-agent: WhatsApp
-Allow: /
-
-User-agent: TelegramBot
-Allow: /
-
-# Block access to sensitive areas (if any)
-Disallow: /api/
-Disallow: /admin/
-Disallow: /private/
-
-# Sitemap location
 Sitemap: https://devtools.hemelo.fyi/sitemap.xml
 
-# Host directive (helps with canonical URLs)
-Host: https://devtools.hemelo.fyi
+# Disallow crawling of build artifacts
+Disallow: /dist/
+Disallow: /node_modules/
+Disallow: /.git/
+Disallow: /src/
+
+# Allow all tool pages
+Allow: /tools/

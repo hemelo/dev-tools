@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Copy, Check, Lock, Unlock, Key } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-export const AesTool = () => {
+const AesTool = () => {
   const [plaintext, setPlaintext] = useState("");
   const [ciphertext, setCiphertext] = useState("");
   const [password, setPassword] = useState("");
@@ -414,3 +414,5 @@ export const AesTool = () => {
     </div>
   );
 };
+
+export default AesTool;

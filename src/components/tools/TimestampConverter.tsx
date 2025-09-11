@@ -17,7 +17,7 @@ interface TimestampFormats {
   readable: string;
 }
 
-export const TimestampConverter = () => {
+const TimestampConverter = () => {
   const [inputValue, setInputValue] = useState("");
   const [inputType, setInputType] = useState<"unix" | "unix-ms" | "iso" | "date">("unix");
   const [formats, setFormats] = useState<TimestampFormats>({
@@ -543,3 +543,5 @@ export const TimestampConverter = () => {
     </div>
   );
 };
+
+export default TimestampConverter;

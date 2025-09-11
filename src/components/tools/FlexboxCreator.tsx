@@ -231,7 +231,7 @@ const ALIGN_SELF = [
   { value: 'stretch', label: 'Stretch' }
 ];
 
-export const FlexboxCreator = () => {
+const FlexboxCreator = () => {
   const [properties, setProperties] = useState<FlexboxProperties>(DEFAULT_PROPERTIES);
   const [copied, setCopied] = useState(false);
   const [activeTab, setActiveTab] = useState("container");
@@ -1328,3 +1328,5 @@ ${generateHTML()}
     </div>
   );
 };
+
+export default FlexboxCreator;

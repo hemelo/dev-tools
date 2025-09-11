@@ -145,7 +145,7 @@ interface AnalysisResult {
   characterDistribution: { [key: string]: number };
 }
 
-export const NanoIDULIDGenerator = () => {
+const NanoIDULIDGenerator = () => {
   const [config, setConfig] = useState<GeneratorConfig>({
     type: "nanoid",
     size: 21,
@@ -753,3 +753,5 @@ export const NanoIDULIDGenerator = () => {
     </div>
   );
 };
+
+export default NanoIDULIDGenerator;

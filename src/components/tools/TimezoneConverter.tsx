@@ -137,7 +137,7 @@ const TIMEZONE_PRESETS: TimezonePreset[] = [
   }
 ];
 
-export const TimezoneConverter = () => {
+const TimezoneConverter = () => {
   const [conversions, setConversions] = useState<TimezoneConversion[]>([]);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [selectedTime, setSelectedTime] = useState(new Date().toTimeString().slice(0, 5));
@@ -780,3 +780,5 @@ export const TimezoneConverter = () => {
     </div>
   );
 };
+
+export default TimezoneConverter;

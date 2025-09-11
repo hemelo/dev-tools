@@ -18,7 +18,7 @@ interface QRCodeOptions {
   backgroundColor: string;
 }
 
-export const QrCodeGenerator = () => {
+const QrCodeGenerator = () => {
   const [text, setText] = useState("");
   const [options, setOptions] = useState<QRCodeOptions>({
     size: 200,
@@ -416,3 +416,5 @@ export const QrCodeGenerator = () => {
     </div>
   );
 };
+
+export default QrCodeGenerator;

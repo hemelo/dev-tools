@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Copy, Check, AlertCircle, CheckCircle, ArrowRightLeft, RotateCcw } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-export const YamlJsonConverter = () => {
+const YamlJsonConverter = () => {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [conversionType, setConversionType] = useState<"yaml-to-json" | "json-to-yaml">("yaml-to-json");
@@ -463,3 +463,5 @@ address:
     </div>
   );
 };
+
+export default YamlJsonConverter;

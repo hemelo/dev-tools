@@ -15,7 +15,7 @@ interface BaseConversion {
   hexadecimal: string;
 }
 
-export const NumberBaseConverter = () => {
+const NumberBaseConverter = () => {
   const [inputValue, setInputValue] = useState("");
   const [inputBase, setInputBase] = useState<keyof BaseConversion>("decimal");
   const [conversions, setConversions] = useState<BaseConversion>({
@@ -479,3 +479,5 @@ export const NumberBaseConverter = () => {
     </div>
   );
 };
+
+export default NumberBaseConverter;

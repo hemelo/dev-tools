@@ -18,7 +18,7 @@ interface DiffResult {
   }>;
 }
 
-export const TextDiffTool = () => {
+const TextDiffTool = () => {
   const [text1, setText1] = useState("");
   const [text2, setText2] = useState("");
   const [diffResult, setDiffResult] = useState<DiffResult>({
@@ -465,3 +465,5 @@ export const TextDiffTool = () => {
     </div>
   );
 };
+
+export default TextDiffTool;

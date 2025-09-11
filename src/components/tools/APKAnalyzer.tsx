@@ -121,7 +121,7 @@ const EMULATOR_DETECTION_KEYWORDS = [
   'android_emulator', 'goldfish', 'ranchu', 'vbox', 'virtual'
 ];
 
-export const APKAnalyzer = () => {
+const APKAnalyzer = () => {
   const [apkFile, setApkFile] = useState<File | null>(null);
   const [apkInfo, setApkInfo] = useState<APKInfo | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -719,4 +719,6 @@ export const APKAnalyzer = () => {
     </div>
   );
 };
+
+export default APKAnalyzer;
 

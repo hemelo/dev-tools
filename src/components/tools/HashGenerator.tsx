@@ -56,7 +56,7 @@ const simpleHash = (str: string, length: number) => {
   return Math.abs(hash).toString(16).padStart(length, '0').substring(0, length);
 };
 
-export const HashGenerator = () => {
+const HashGenerator = () => {
   const [input, setInput] = useState("");
   const [algorithm, setAlgorithm] = useState("sha256");
   const [results, setResults] = useState<Record<string, string>>({});
@@ -380,3 +380,5 @@ export const HashGenerator = () => {
     </div>
   );
 };
+
+export default HashGenerator;

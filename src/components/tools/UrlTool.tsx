@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Copy, Check, ArrowUpDown } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-export const UrlTool = () => {
+const UrlTool = () => {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [activeTab, setActiveTab] = useState("encode");
@@ -316,3 +316,5 @@ export const UrlTool = () => {
     </div>
   );
 };
+
+export default UrlTool;

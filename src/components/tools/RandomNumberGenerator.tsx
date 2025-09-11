@@ -186,7 +186,7 @@ const PRESET_CONFIGS = [
   }
 ];
 
-export const RandomNumberGenerator = () => {
+const RandomNumberGenerator = () => {
   const [config, setConfig] = useState<RandomNumberConfig>({
     type: 'integer',
     min: 1,
@@ -1010,3 +1010,5 @@ export const RandomNumberGenerator = () => {
     </div>
   );
 };
+
+export default RandomNumberGenerator;

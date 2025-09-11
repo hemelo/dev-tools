@@ -16,7 +16,7 @@ interface XmlStats {
   types: Record<string, number>;
 }
 
-export const XmlFormatter = () => {
+const XmlFormatter = () => {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [isValid, setIsValid] = useState<boolean | null>(null);
@@ -637,3 +637,5 @@ export const XmlFormatter = () => {
     </div>
   );
 };
+
+export default XmlFormatter;

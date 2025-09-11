@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Copy, Check, Key } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-export const HmacGenerator = () => {
+const HmacGenerator = () => {
   const [message, setMessage] = useState("");
   const [secretKey, setSecretKey] = useState("");
   const [algorithm, setAlgorithm] = useState("SHA-256");
@@ -272,3 +272,5 @@ export const HmacGenerator = () => {
     </div>
   );
 };
+
+export default HmacGenerator;

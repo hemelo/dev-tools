@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Copy, Check, ArrowUpDown, FileText, Code, Image } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-export const Base64Tool = () => {
+const Base64Tool = () => {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [activeTab, setActiveTab] = useState("encode");
@@ -390,3 +390,5 @@ export const Base64Tool = () => {
     </div>
   );
 };
+
+export default Base64Tool;

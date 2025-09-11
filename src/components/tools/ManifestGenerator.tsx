@@ -107,7 +107,7 @@ interface IconSize {
   required: boolean;
 }
 
-export const ManifestGenerator = () => {
+const ManifestGenerator = () => {
   const [manifestData, setManifestData] = useState<ManifestData>({
     name: "",
     short_name: "",
@@ -1045,3 +1045,5 @@ export const ManifestGenerator = () => {
     </div>
   );
 };
+
+export default ManifestGenerator;

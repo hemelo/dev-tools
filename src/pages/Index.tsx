@@ -55,59 +55,26 @@ import {
   Heart
 } from "lucide-react";
 import { useState, useMemo, useEffect, useRef } from "react";
-import { JsonFormatter } from "@/components/tools/JsonFormatter";
-import { UuidGenerator } from "@/components/tools/UuidGenerator";
-import { Base64Tool } from "@/components/tools/Base64Tool";
-import { UrlTool } from "@/components/tools/UrlTool";
-import { HashGenerator } from "@/components/tools/HashGenerator";
-import { PasswordGenerator } from "@/components/tools/PasswordGenerator";
-import { JwtTool } from "@/components/tools/JwtTool";
-import { HmacGenerator } from "@/components/tools/HmacGenerator";
-import { AesTool } from "@/components/tools/AesTool";
-import { CsvJsonConverter } from "@/components/tools/CsvJsonConverter";
-import { ColorPicker } from "@/components/tools/ColorPicker";
-import { NumberBaseConverter } from "@/components/tools/NumberBaseConverter";
-import { TimestampConverter } from "@/components/tools/TimestampConverter";
-import CaseConverter from "@/components/tools/CaseConverter";
-import { RegexTester } from "@/components/tools/RegexTester";
-import { QrCodeGenerator } from "@/components/tools/QrCodeGenerator";
-import { TextDiffTool } from "@/components/tools/TextDiffTool";
-import { YamlJsonConverter } from "@/components/tools/YamlJsonConverter";
-import { XmlFormatter } from "@/components/tools/XmlFormatter";
-import DataVisualizer from "@/components/tools/DataVisualizer";
-import IpGeolocation from "@/components/tools/IpGeolocation";
-import MarkdownEditor from "@/components/tools/MarkdownEditor";
-import CssGradientGenerator from "@/components/tools/CssGradientGenerator";
-import ApiTester from "@/components/tools/ApiTester";
-import JsonSchemaGenerator from "@/components/tools/JsonSchemaGenerator";
-import DnsLookup from "@/components/tools/DnsLookup";
-import LoremIpsumGenerator from "@/components/tools/LoremIpsumGenerator";
-import ColorPaletteGenerator from "@/components/tools/ColorPaletteGenerator";
-import GitCommitGenerator from "@/components/tools/GitCommitGenerator";
-import CurlGenerator from "@/components/tools/CurlGenerator";
-import SubnetCalculator from "@/components/tools/SubnetCalculator";
-import SslChecker from "@/components/tools/SslChecker";
-import CronGenerator from "@/components/tools/CronGenerator";
-import SlugGenerator from "@/components/tools/SlugGenerator";
-import SqlFormatter from "@/components/tools/SqlFormatter";
-import MockDataGenerator from "@/components/tools/MockDataGenerator";
-import { FaviconGenerator } from "@/components/tools/FaviconGenerator";
-import { FlexboxCreator } from "@/components/tools/FlexboxCreator";
-import { TimezoneConverter } from "@/components/tools/TimezoneConverter";
-import { RandomNumberGenerator } from "@/components/tools/RandomNumberGenerator";
-import { UnitConverter } from "@/components/tools/UnitConverter";
-import { ChecksumTool } from "@/components/tools/ChecksumTool";
-import { APKAnalyzer } from "@/components/tools/APKAnalyzer";
-import { EXIFInspector } from "@/components/tools/EXIFInspector";
-import { BarcodeGenerator } from "@/components/tools/BarcodeGenerator";
-import { SequenceDiagrams } from "@/components/tools/SequenceDiagrams";
-import { MatrixCalculator } from "@/components/tools/MatrixCalculator";
-import { ASCIIUnicodeExplorer } from "@/components/tools/ASCIIUnicodeExplorer";
-import { ManifestGenerator } from "@/components/tools/ManifestGenerator";
-import { StatisticsCalculator } from "@/components/tools/StatisticsCalculator";
-import { NanoIDULIDGenerator } from "@/components/tools/NanoIDULIDGenerator";
-import { WorkdayCalculator } from "@/components/tools/WorkdayCalculator";
-import { PasswordStrengthTester } from "@/components/tools/PasswordStrengthTester";
+import { useNavigate } from "react-router-dom";
+import { getToolUrl } from "@/lib/toolUtils";
+import { SEOHead } from "@/components/SEOHead";
+import { useKeyboardShortcuts, SHORTCUT_PATTERNS } from "@/hooks/useKeyboardShortcuts";
+import { KeyboardShortcutsModal } from "@/components/KeyboardShortcutsModal";
+import { KeyboardShortcutsButton, KeyboardShortcutIndicator } from "@/components/KeyboardShortcutIndicator";
+import { RecentToolsModal } from "@/components/RecentToolsModal";
+import { RecentToolsFloatingButton } from "@/components/RecentToolsFloatingButton";
+import { useLoading } from "@/hooks/useLoading";
+import { LoadingWrapper, LoadingOverlay } from "@/components/LoadingWrapper";
+import { 
+  ToolGridSkeleton
+} from "@/components/SkeletonComponents";
+import { 
+  StaggerContainer, 
+  StaggerItem, 
+  AnimatedToolCard,
+  FadeIn 
+} from "@/components/LoadingAnimations";
+
 
 const tools = [
   {
@@ -540,14 +507,19 @@ const saveFavorites = (favorites: string[]) => {
 };
 
 const Index = () => {
-  const [selectedTool, setSelectedTool] = useState<string | null>(null);
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [hasVisitedBefore, setHasVisitedBefore] = useState<boolean>(false);
   const [showWelcomeMessage, setShowWelcomeMessage] = useState<boolean>(false);
   const [hasScrolledInSession, setHasScrolledInSession] = useState<boolean>(false);
   const [favorites, setFavorites] = useState<string[]>([]);
+  const [showShortcutsModal, setShowShortcutsModal] = useState<boolean>(false);
+  const [showRecentToolsModal, setShowRecentToolsModal] = useState<boolean>(false);
+  const [selectedToolIndex, setSelectedToolIndex] = useState<number>(-1);
+  const [isToolsLoading, setIsToolsLoading] = useState<boolean>(false);
   const toolsSectionRef = useRef<HTMLElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const filteredTools = useMemo(() => {
     const filtered = tools.filter(tool => {
@@ -583,6 +555,30 @@ const Index = () => {
   useEffect(() => {
     setFavorites(getFavorites());
   }, []);
+
+  // Handle search loading state
+  useEffect(() => {
+    if (searchQuery) {
+      setIsToolsLoading(true);
+      const timer = setTimeout(() => {
+        setIsToolsLoading(false);
+      }, 300);
+
+      return () => clearTimeout(timer);
+    } else {
+      setIsToolsLoading(false);
+    }
+  }, [searchQuery]);
+
+  // Handle category loading state
+  useEffect(() => {
+    setIsToolsLoading(true);
+    const timer = setTimeout(() => {
+      setIsToolsLoading(false);
+    }, 200);
+
+    return () => clearTimeout(timer);
+  }, [selectedCategory]);
 
   // Toggle favorite function
   const toggleFavorite = (toolId: string, event: React.MouseEvent) => {
@@ -623,8 +619,8 @@ const Index = () => {
 
   // Handle visit tracking and scroll animation (only on main page and only once per session)
   useEffect(() => {
-    // Only trigger scroll animation when on the main page (no tool selected) and haven't scrolled in this session
-    if (selectedTool !== null || hasScrolledInSession) {
+    // Only trigger scroll animation when on the main page and haven't scrolled in this session
+    if (hasScrolledInSession) {
       return;
     }
 
@@ -669,187 +665,63 @@ const Index = () => {
       setCookie('devtools_visited', 'true', 365);
       setHasVisitedBefore(false);
     }
-  }, [selectedTool, hasScrolledInSession]); // Add hasScrolledInSession as dependency
+  }, [hasScrolledInSession]); // Add hasScrolledInSession as dependency
 
-  // Scroll to top when accessing a tool
-  useEffect(() => {
-    if (selectedTool !== null) {
-      // Scroll to top when a tool is selected with delay for mobile
-      setTimeout(() => {
-        // Force scroll to top, especially important for mobile
-        window.scrollTo({
-          top: 0,
-          left: 0,
-          behavior: 'smooth'
-        });
-        
-        // Additional fallback for mobile devices
-        setTimeout(() => {
-          // Try multiple methods to ensure scroll to top works on all devices
-          window.scrollTo(0, 0);
-          document.documentElement.scrollTop = 0;
-          document.body.scrollTop = 0;
-        }, 100);
-      }, 200);
-    }
-  }, [selectedTool]);
-
-  const renderTool = () => {
-    switch (selectedTool) {
-      case "sequence-diagrams":
-        return <SequenceDiagrams />;
-      case "matrix-calculator":
-        return <MatrixCalculator />;
-      case "ascii-unicode-explorer":
-        return <ASCIIUnicodeExplorer />;
-      case "manifest-generator":
-        return <ManifestGenerator />;
-      case "statistics-calculator":
-        return <StatisticsCalculator />;
-      case "nanoid-ulid-generator":
-        return <NanoIDULIDGenerator />;
-      case "workday-calculator":
-        return <WorkdayCalculator />;
-      case "password-strength-tester":
-        return <PasswordStrengthTester />;
-      case "barcode-generator":
-        return <BarcodeGenerator />;
-      case "exif-inspector":
-        return <EXIFInspector />;
-      case "apk-analyzer":
-        return <APKAnalyzer />;
-      case "checksum-tool":
-        return <ChecksumTool />;
-      case "unit-converter":
-        return <UnitConverter />;
-      case "random-generator":
-        return <RandomNumberGenerator />;
-      case "timezone-converter":
-        return <TimezoneConverter />;
-      case "flexbox-creator":
-        return <FlexboxCreator />;
-      case "favicon-generator":
-        return <FaviconGenerator />;
-      case "json":
-        return <JsonFormatter />;
-      case "csv-json":
-        return <CsvJsonConverter />;
-      case "yaml-json":
-        return <YamlJsonConverter />;
-      case "xml-formatter":
-        return <XmlFormatter />;
-      case "case-converter":
-        return <CaseConverter />;
-      case "text-diff":
-        return <TextDiffTool />;
-      case "regex-tester":
-        return <RegexTester />;
-      case "uuid":
-        return <UuidGenerator />;
-      case "qr-code":
-        return <QrCodeGenerator />;
-      case "base64":
-        return <Base64Tool />;
-      case "url":
-        return <UrlTool />;
-      case "color-picker":
-        return <ColorPicker />;
-      case "number-base":
-        return <NumberBaseConverter />;
-      case "timestamp":
-        return <TimestampConverter />;
-      case "hash":
-        return <HashGenerator />;
-      case "password":
-        return <PasswordGenerator />;
-      case "jwt":
-        return <JwtTool />;
-      case "hmac":
-        return <HmacGenerator />;
-      case "aes":
-        return <AesTool />;
-      case "data-visualizer":
-        return <DataVisualizer />;
-      case "ip-geolocation":
-        return <IpGeolocation />;
-      case "markdown-editor":
-        return <MarkdownEditor />;
-      case "css-gradient-generator":
-        return <CssGradientGenerator />;
-      case "api-tester":
-        return <ApiTester />;
-      case "json-schema-generator":
-        return <JsonSchemaGenerator />;
-      case "dns-lookup":
-        return <DnsLookup />;
-      case "lorem-ipsum-generator":
-        return <LoremIpsumGenerator />;
-      case "color-palette-generator":
-        return <ColorPaletteGenerator />;
-      case "git-commit-generator":
-        return <GitCommitGenerator />;
-      case "curl-generator":
-        return <CurlGenerator />;
-      case "subnet-calculator":
-        return <SubnetCalculator />;
-      case "ssl-checker":
-        return <SslChecker />;
-      case "cron-generator":
-        return <CronGenerator />;
-      case "slug-generator":
-        return <SlugGenerator />;
-      case "sql-formatter":
-        return <SqlFormatter />;
-      case "mock-data-generator":
-        return <MockDataGenerator />;
-      default:
-        return null;
-    }
+  const handleToolClick = (toolId: string) => {
+    const toolUrl = getToolUrl(toolId);
+    navigate(toolUrl);
   };
 
-  if (selectedTool) {
-    return (
-      <div className="min-h-screen bg-background">
-        <header className="border-b border-border bg-card">
-          <div className="container mx-auto px-4 py-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <Button
-                  variant="ghost"
-                  onClick={() => {
-                    setSelectedTool(null);
-                    // Scroll to Developer Tools section after a small delay
-                    setTimeout(() => {
-                      if (toolsSectionRef.current) {
-                        toolsSectionRef.current.scrollIntoView({
-                          behavior: 'smooth',
-                          block: 'start',
-                          inline: 'nearest'
-                        });
-                      }
-                    }, 100);
-                  }}
-                  className="text-muted-foreground hover:text-foreground"
-                >
-                  ← Back to Tools
-                </Button>
-                <div className="flex items-center gap-2">
-                  <Code2 className="h-6 w-6 text-primary" />
-                  <h1 className="text-xl font-bold">DevTools Hub</h1>
-                </div>
-              </div>
-            </div>
-          </div>
-        </header>
-        <main className="container mx-auto px-4 py-8">
-          {renderTool()}
-        </main>
-      </div>
-    );
-  }
+  // Keyboard shortcut handlers - Simplified
+  const focusSearch = () => {
+    searchInputRef.current?.focus();
+  };
+
+  const navigateToNextCategory = () => {
+    const categories = ["All", "Text", "Cryptography", "Web Development", "Generator", "Network", "Utilities", "Security", "Data", "Favorites"];
+    const currentIndex = categories.indexOf(selectedCategory);
+    const nextIndex = currentIndex < categories.length - 1 ? currentIndex + 1 : 0;
+    setCategory(categories[nextIndex]);
+  };
+
+  const navigateToPrevCategory = () => {
+    const categories = ["All", "Text", "Cryptography", "Web Development", "Generator", "Network", "Utilities", "Security", "Data", "Favorites"];
+    const currentIndex = categories.indexOf(selectedCategory);
+    const prevIndex = currentIndex > 0 ? currentIndex - 1 : categories.length - 1;
+    setCategory(categories[prevIndex]);
+  };
+
+  const setCategory = (category: string) => {
+    setSelectedCategory(category);
+    setSelectedToolIndex(-1);
+  };
+
+  // Keyboard shortcuts configuration - Simplified
+  const shortcuts = [
+    // Navigation
+    SHORTCUT_PATTERNS.SEARCH(focusSearch),
+    
+    // Category navigation
+    SHORTCUT_PATTERNS.NEXT_CATEGORY(navigateToNextCategory),
+    SHORTCUT_PATTERNS.PREV_CATEGORY(navigateToPrevCategory),
+    
+    // Help
+    SHORTCUT_PATTERNS.HELP(() => setShowShortcutsModal(true)),
+  ];
+
+  // Apply keyboard shortcuts
+  useKeyboardShortcuts(shortcuts, { enabled: true, debug: false });
+
+  // Remove page-level skeleton loading for immediate hero section display
 
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title="DevTools Hub - Essential Developer Tools"
+        description="Free online developer tools including JSON formatter, UUID generator, Base64 encoder/decoder, URL encoder, and hash generators. Fast, secure, and works offline."
+        keywords="developer tools, json formatter, uuid generator, base64 encoder, url encoder, hash generator, password generator, qr code generator, free tools, online tools, web development, programming tools"
+        canonical="https://devtools.hemelo.fyi"
+      />
       {/* Hero Section with Stunning Background */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Animated Background */}
@@ -996,14 +868,20 @@ const Index = () => {
               <div className="relative mb-4">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 <Input
-                  placeholder="Search tools..."
+                  ref={searchInputRef}
+                  placeholder="Search tools... (Ctrl+K to focus)"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-10 pr-4 py-3 text-lg rounded-xl border-primary/20 focus:border-primary"
                 />
+                <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                  <kbd className="text-xs px-2 py-1 bg-muted rounded text-muted-foreground">
+                    /
+                  </kbd>
+                </div>
               </div>
               
-              <div className="flex flex-wrap gap-2 justify-center">
+              <div className="flex flex-wrap gap-2 justify-center items-center">
                 <Button
                   variant={selectedCategory === "Favorites" ? "default" : "outline"}
                   onClick={() => setSelectedCategory("Favorites")}
@@ -1026,15 +904,23 @@ const Index = () => {
             </div>
           </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredTools.map((tool) => {
+        <LoadingWrapper
+          isLoading={isToolsLoading}
+          skeleton={<ToolGridSkeleton count={filteredTools.length || 9} />}
+        >
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredTools.map((tool, index) => {
             const IconComponent = tool.icon;
             return (
-              <Card 
-                key={tool.id} 
-                  className="hover:shadow-xl transition-all duration-300 cursor-pointer hover:border-primary/50 group hover:-translate-y-1"
-                onClick={() => setSelectedTool(tool.id)}
-              >
+              <StaggerItem key={tool.id}>
+                <div
+                  className={`hover:shadow-xl transition-all duration-300 cursor-pointer hover:border-primary/50 group ${
+                    selectedToolIndex === index ? 'ring-2 ring-primary border-primary/50' : ''
+                  }`}
+                  onClick={() => handleToolClick(tool.id)}
+                >
+                  <AnimatedToolCard>
+                    <Card className="h-full">
                 <CardHeader>
                   <div className="flex items-start justify-between mb-2">
                       <div className="p-3 rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
@@ -1081,9 +967,13 @@ const Index = () => {
                   </Button>
                 </CardContent>
               </Card>
+                  </AnimatedToolCard>
+                </div>
+              </StaggerItem>
             );
           })}
-        </div>
+          </StaggerContainer>
+        </LoadingWrapper>
 
           {filteredTools.length === 0 && (
             <div className="text-center py-12">
@@ -1228,6 +1118,33 @@ const Index = () => {
           </div>
         </div>
       </footer>
+
+      {/* Keyboard Shortcuts Modal */}
+      <KeyboardShortcutsModal
+        open={showShortcutsModal}
+        onOpenChange={setShowShortcutsModal}
+        shortcuts={shortcuts}
+      />
+
+      {/* Keyboard Shortcut Indicator */}
+      <KeyboardShortcutIndicator
+        shortcuts={shortcuts}
+        onShowHelp={() => setShowShortcutsModal(true)}
+      />
+
+      {/* Recent Tools Floating Button */}
+      <RecentToolsFloatingButton
+        onClick={() => setShowRecentToolsModal(true)}
+      />
+
+      {/* Recent Tools Modal */}
+      <RecentToolsModal
+        open={showRecentToolsModal}
+        onOpenChange={setShowRecentToolsModal}
+        onToolClick={handleToolClick}
+        showStats={true}
+        maxItems={10}
+      />
     </div>
   );
 };
