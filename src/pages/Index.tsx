@@ -782,7 +782,7 @@ const Index = () => {
                   });
                 }
               }}
-              aria-label="Scroll to developer tools section"
+              aria-label="Explore Tools - Scroll to developer tools section"
             >
               <Star className="mr-2 h-5 w-5" aria-hidden="true" />
               Explore Tools
@@ -832,39 +832,47 @@ const Index = () => {
             </p>
           </header>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" role="list" aria-label="Platform benefits">
-            <article className="text-center p-8 hover:shadow-xl transition-all duration-300 hover:border-primary/50 group" role="listitem">
-              <div className="p-4 rounded-full bg-primary/10 w-fit mx-auto mb-6 group-hover:bg-primary/20 transition-colors" aria-hidden="true">
-                <Globe className="h-8 w-8 text-primary" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Works Offline</h3>
-              <p className="text-muted-foreground">All processing happens locally in your browser. No internet required.</p>
-            </article>
+          <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" aria-label="Platform benefits">
+            <li className="text-center p-8 hover:shadow-xl transition-all duration-300 hover:border-primary/50 group">
+              <article>
+                <div className="p-4 rounded-full bg-primary/10 w-fit mx-auto mb-6 group-hover:bg-primary/20 transition-colors" aria-hidden="true">
+                  <Globe className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3">Works Offline</h3>
+                <p className="text-muted-foreground">All processing happens locally in your browser. No internet required.</p>
+              </article>
+            </li>
 
-            <article className="text-center p-8 hover:shadow-xl transition-all duration-300 hover:border-primary/50 group" role="listitem">
-              <div className="p-4 rounded-full bg-primary/10 w-fit mx-auto mb-6 group-hover:bg-primary/20 transition-colors" aria-hidden="true">
-                <Shield className="h-8 w-8 text-primary" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Privacy First</h3>
-              <p className="text-muted-foreground">Your data never leaves your browser. Complete privacy guaranteed.</p>
-            </article>
+            <li className="text-center p-8 hover:shadow-xl transition-all duration-300 hover:border-primary/50 group">
+              <article>
+                <div className="p-4 rounded-full bg-primary/10 w-fit mx-auto mb-6 group-hover:bg-primary/20 transition-colors" aria-hidden="true">
+                  <Shield className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3">Privacy First</h3>
+                <p className="text-muted-foreground">Your data never leaves your browser. Complete privacy guaranteed.</p>
+              </article>
+            </li>
 
-            <article className="text-center p-8 hover:shadow-xl transition-all duration-300 hover:border-primary/50 group" role="listitem">
-              <div className="p-4 rounded-full bg-primary/10 w-fit mx-auto mb-6 group-hover:bg-primary/20 transition-colors" aria-hidden="true">
-                <Zap className="h-8 w-8 text-primary" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Lightning Fast</h3>
-              <p className="text-muted-foreground">Optimized for speed. Get results instantly without any delays.</p>
-            </article>
+            <li className="text-center p-8 hover:shadow-xl transition-all duration-300 hover:border-primary/50 group">
+              <article>
+                <div className="p-4 rounded-full bg-primary/10 w-fit mx-auto mb-6 group-hover:bg-primary/20 transition-colors" aria-hidden="true">
+                  <Zap className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3">Lightning Fast</h3>
+                <p className="text-muted-foreground">Optimized for speed. Get results instantly without any delays.</p>
+              </article>
+            </li>
 
-            <article className="text-center p-8 hover:shadow-xl transition-all duration-300 hover:border-primary/50 group" role="listitem">
-              <div className="p-4 rounded-full bg-primary/10 w-fit mx-auto mb-6 group-hover:bg-primary/20 transition-colors" aria-hidden="true">
-                <Users className="h-8 w-8 text-primary" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Community Driven</h3>
-              <p className="text-muted-foreground">Built by developers, for developers. Open source and always improving.</p>
-            </article>
-          </div>
+            <li className="text-center p-8 hover:shadow-xl transition-all duration-300 hover:border-primary/50 group">
+              <article>
+                <div className="p-4 rounded-full bg-primary/10 w-fit mx-auto mb-6 group-hover:bg-primary/20 transition-colors" aria-hidden="true">
+                  <Users className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3">Community Driven</h3>
+                <p className="text-muted-foreground">Built by developers, for developers. Open source and always improving.</p>
+              </article>
+            </li>
+          </ul>
         </div>
       </section>
 
@@ -1073,7 +1081,7 @@ const Index = () => {
                   size="sm" 
                   className="rounded-full hover:bg-primary/10 hover:border-primary transition-all duration-200"
                   onClick={() => window.open('https://github.com/hemelo/dev-tools', '_blank')}
-                  aria-label="View project on GitHub (opens in new tab)"
+                  aria-label="GitHub - View project on GitHub (opens in new tab)"
                 >
                   <Github className="h-4 w-4 mr-2" aria-hidden="true" />
                   GitHub
@@ -1083,7 +1091,7 @@ const Index = () => {
                   size="sm" 
                   className="rounded-full hover:bg-primary/10 hover:border-primary transition-all duration-200"
                   onClick={() => window.open('https://x.com/hemelodev', '_blank')}
-                  aria-label="Follow on Twitter (opens in new tab)"
+                  aria-label="Twitter - Follow on Twitter (opens in new tab)"
                 >
                   <Twitter className="h-4 w-4 mr-2" aria-hidden="true" />
                   Twitter
@@ -1093,7 +1101,7 @@ const Index = () => {
                   size="sm" 
                   className="rounded-full hover:bg-primary/10 hover:border-primary transition-all duration-200"
                   onClick={() => window.open('https://www.linkedin.com/in/henriquefcmelo/', '_blank')}
-                  aria-label="Connect on LinkedIn (opens in new tab)"
+                  aria-label="LinkedIn - Connect on LinkedIn (opens in new tab)"
                 >
                   <Linkedin className="h-4 w-4 mr-2" aria-hidden="true" />
                   LinkedIn
@@ -1103,7 +1111,7 @@ const Index = () => {
                   size="sm" 
                   className="rounded-full hover:bg-primary/10 hover:border-primary transition-all duration-200"
                   onClick={() => window.open('mailto:hemelo@pm.me', '_blank')}
-                  aria-label="Send email (opens in new tab)"
+                  aria-label="Email - Send email (opens in new tab)"
                 >
                   <Mail className="h-4 w-4 mr-2" aria-hidden="true" />
                   Email
@@ -1113,61 +1121,61 @@ const Index = () => {
 
             <nav aria-labelledby="tools-heading-footer">
               <h4 id="tools-heading-footer" className="font-semibold mb-4">Tools</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground" role="list">
-                <li><a href="#" className="hover:text-primary transition-colors" aria-label="View JSON tools">JSON Tools</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors" aria-label="View cryptography tools">Cryptography</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors" aria-label="View web development tools">Web Development</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors" aria-label="View data analysis tools">Data Analysis</a></li>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><a href="#" className="hover:text-primary transition-colors" aria-label="JSON Tools - View JSON tools">JSON Tools</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors" aria-label="Cryptography - View cryptography tools">Cryptography</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors" aria-label="Web Development - View web development tools">Web Development</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors" aria-label="Data Analysis - View data analysis tools">Data Analysis</a></li>
               </ul>
             </nav>
 
             <nav aria-labelledby="developer-heading-footer">
               <h4 id="developer-heading-footer" className="font-semibold mb-4">Developer</h4>
               <div className="space-y-3 text-sm text-muted-foreground" role="list">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2" role="listitem">
                   <Github className="h-4 w-4" aria-hidden="true" />
                   <a 
                     href="https://github.com/hemelo" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="hover:text-primary transition-colors cursor-pointer"
-                    aria-label="View GitHub profile (opens in new tab)"
+                    aria-label="GitHub Profile - View GitHub profile (opens in new tab)"
                   >
                     GitHub Profile
                   </a>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2" role="listitem">
                   <Twitter className="h-4 w-4" aria-hidden="true" />
                   <a 
                     href="https://x.com/hemelodev" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="hover:text-primary transition-colors cursor-pointer"
-                    aria-label="View Twitter profile (opens in new tab)"
+                    aria-label="Twitter Profile - View Twitter profile (opens in new tab)"
                   >
                     Twitter Profile
                   </a>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2" role="listitem">
                   <Linkedin className="h-4 w-4" aria-hidden="true" />
                   <a 
                     href="https://www.linkedin.com/in/henriquefcmelo/" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="hover:text-primary transition-colors cursor-pointer"
-                    aria-label="View LinkedIn profile (opens in new tab)"
+                    aria-label="LinkedIn Profile - View LinkedIn profile (opens in new tab)"
                   >
                     LinkedIn Profile
                   </a>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2" role="listitem">
                   <Mail className="h-4 w-4" aria-hidden="true" />
                   <a 
                     href="mailto:henrique@hemelo.fyi" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="hover:text-primary transition-colors cursor-pointer"
-                    aria-label="Send email to hemelo@pm.me (opens in new tab)"
+                    aria-label="hemelo@pm.me - Send email (opens in new tab)"
                   >
                     hemelo@pm.me
                   </a>
