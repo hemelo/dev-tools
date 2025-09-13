@@ -189,7 +189,7 @@ Built a modern, performant web application using:
 - **Reliability**: No dependency on external services or internet connectivity
 - **Security**: Sensitive operations like password generation and encryption happen locally
 - **Learning**: Clear feedback helps developers understand security concepts (entropy, strength, QR encoding)
-- **Comprehensive Coverage**: 47 essential tools covering all major development needs
+- **Comprehensive Coverage**: 54 essential tools covering all major development needs
 - **Enhanced Productivity**: One-stop solution for text processing, data conversion, web development, and cryptography
 - **Professional Quality**: Real QR codes, advanced text processing, and enterprise-grade security features
 - **Developer Experience**: Interactive examples, real-time validation, and intuitive interfaces
@@ -318,6 +318,7 @@ npm run build
 | **Subnet Calculator** | Network | Calculate network information and subnet masks |
 | **SSL/TLS Checker** | Network | Check SSL certificate validity and security grade |
 | **Cron Expression Generator** | Development | Generate and validate cron expressions with visual interface |
+| **SQL Query Builder** | Database | Build SQL queries visually with drag-and-drop interface, table relationships, and real-time query generation |
 
 ---
 
