@@ -324,5 +324,11 @@ export const toolMetadata: Record<string, ToolMetadata> = {
     name: "Password Strength Tester",
     category: "Cryptography & Security"
   },
+  "sql-query-builder": {
+    title: "SQL Query Builder - DevTools Hub",
+    description: "Build SQL queries visually with drag-and-drop interface, table relationships, and real-time query generation. Free SQL query builder.",
+    name: "SQL Query Builder",
+    category: "Database"
+  },
 };
 

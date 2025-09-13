@@ -53,6 +53,7 @@ export const toolIdToSlug: Record<string, string> = {
   "nanoid-ulid-generator": "nanoid-ulid-generator",
   "workday-calculator": "workday-calculator",
   "password-strength-tester": "password-strength-tester",
+  "sql-query-builder": "sql-query-builder",
 };
 
 // URL slug to tool ID mapping (reverse mapping)

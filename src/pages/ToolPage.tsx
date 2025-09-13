@@ -8,6 +8,7 @@ import { toolMetadata } from "@/lib/toolMetadata";
 import { useMountLoading } from "@/hooks/useLoading";
 import { ToolPageLoadingSkeleton } from "@/components/SkeletonComponents";
 import { LazyToolComponent } from "@/components/LazyToolComponent";
+import { Footer } from "@/components/Footer";
 
 // Tool components are now loaded lazily via LazyToolComponent
 
@@ -91,6 +92,9 @@ const ToolPage = () => {
             </Button>
           </div>
         </main>
+        
+        {/* Footer */}
+        <Footer />
       </div>
     );
   }
@@ -125,6 +129,9 @@ const ToolPage = () => {
       <main className="container mx-auto px-4 py-8">
         <LazyToolComponent toolId={toolId} />
       </main>
+      
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

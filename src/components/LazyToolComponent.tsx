@@ -56,6 +56,7 @@ const StatisticsCalculator = lazy(() => import('@/components/tools/StatisticsCal
 const NanoIDULIDGenerator = lazy(() => import('@/components/tools/NanoIDULIDGenerator'));
 const WorkdayCalculator = lazy(() => import('@/components/tools/WorkdayCalculator'));
 const PasswordStrengthTester = lazy(() => import('@/components/tools/PasswordStrengthTester'));
+const SqlQueryBuilder = lazy(() => import('@/components/tools/SqlQueryBuilder'));
 
 // Tool component mapping
 const toolComponents: Record<string, React.ComponentType> = {
@@ -112,6 +113,7 @@ const toolComponents: Record<string, React.ComponentType> = {
   "nanoid-ulid-generator": NanoIDULIDGenerator,
   "workday-calculator": WorkdayCalculator,
   "password-strength-tester": PasswordStrengthTester,
+  "sql-query-builder": SqlQueryBuilder,
 };
 
 interface LazyToolComponentProps {
@@ -140,7 +142,9 @@ export const LazyToolComponent = ({ toolId }: LazyToolComponentProps) => {
           showSpinner={true}
           message="Loading tool..."
           className="min-h-96"
-        />
+        >
+          <div />
+        </LoadingWrapper>
       }
     >
       <ToolComponent />

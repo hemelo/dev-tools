@@ -36,6 +36,8 @@ interface MockDataConfig {
   includeDates: boolean;
   includeIds: boolean;
   includeCreditCards: boolean;
+  includeCPF: boolean;
+  includeCNPJ: boolean;
   format: 'json' | 'csv' | 'sql';
   locale: string;
 }
@@ -54,6 +56,8 @@ interface MockData {
   country?: string;
   dateOfBirth?: string;
   creditCard?: string;
+  cpf?: string;
+  cnpj?: string;
 }
 
 const MockDataGenerator = () => {
@@ -66,6 +70,8 @@ const MockDataGenerator = () => {
     includeDates: false,
     includeIds: true,
     includeCreditCards: false,
+    includeCPF: false,
+    includeCNPJ: false,
     format: 'json',
     locale: 'en-US'
   });
@@ -192,35 +198,95 @@ const MockDataGenerator = () => {
     return `${type}: ${number}`;
   };
 
-  const generateMockData = (): MockData[] => {
+  const generateCPF = (): string => {
+    // Generate first 9 digits
+    const digits = [];
+    for (let i = 0; i < 9; i++) {
+      digits.push(generateRandomNumber(0, 9));
+    }
+    
+    // Calculate first check digit
+    let sum = 0;
+    for (let i = 0; i < 9; i++) {
+      sum += digits[i] * (10 - i);
+    }
+    let firstCheck = 11 - (sum % 11);
+    if (firstCheck >= 10) firstCheck = 0;
+    digits.push(firstCheck);
+    
+    // Calculate second check digit
+    sum = 0;
+    for (let i = 0; i < 10; i++) {
+      sum += digits[i] * (11 - i);
+    }
+    let secondCheck = 11 - (sum % 11);
+    if (secondCheck >= 10) secondCheck = 0;
+    digits.push(secondCheck);
+    
+    // Format as XXX.XXX.XXX-XX
+    return `${digits.slice(0, 3).join('')}.${digits.slice(3, 6).join('')}.${digits.slice(6, 9).join('')}-${digits.slice(9, 11).join('')}`;
+  };
+
+  const generateCNPJ = (): string => {
+    // Generate first 12 digits
+    const digits = [];
+    for (let i = 0; i < 12; i++) {
+      digits.push(generateRandomNumber(0, 9));
+    }
+    
+    // Calculate first check digit
+    const weights1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+    let sum = 0;
+    for (let i = 0; i < 12; i++) {
+      sum += digits[i] * weights1[i];
+    }
+    let firstCheck = sum % 11;
+    firstCheck = firstCheck < 2 ? 0 : 11 - firstCheck;
+    digits.push(firstCheck);
+    
+    // Calculate second check digit
+    const weights2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+    sum = 0;
+    for (let i = 0; i < 13; i++) {
+      sum += digits[i] * weights2[i];
+    }
+    let secondCheck = sum % 11;
+    secondCheck = secondCheck < 2 ? 0 : 11 - secondCheck;
+    digits.push(secondCheck);
+    
+    // Format as XX.XXX.XXX/XXXX-XX
+    return `${digits.slice(0, 2).join('')}.${digits.slice(2, 5).join('')}.${digits.slice(5, 8).join('')}/${digits.slice(8, 12).join('')}-${digits.slice(12, 14).join('')}`;
+  };
+
+  const generateMockData = (cfg: MockDataConfig = config): MockData[] => {
     const data: MockData[] = [];
     
-    for (let i = 0; i < config.count; i++) {
+    for (let i = 0; i < cfg.count; i++) {
       const firstName = generateRandomElement(firstNames);
       const lastName = generateRandomElement(lastNames);
       const address = generateAddress();
       
       const item: MockData = {};
       
-      if (config.includeIds) {
+      if (cfg.includeIds) {
         item.id = i + 1;
       }
       
-      if (config.includeNames) {
+      if (cfg.includeNames) {
         item.firstName = firstName;
         item.lastName = lastName;
         item.fullName = `${firstName} ${lastName}`;
       }
       
-      if (config.includeEmails) {
+      if (cfg.includeEmails) {
         item.email = generateEmail(firstName, lastName);
       }
       
-      if (config.includePhones) {
+      if (cfg.includePhones) {
         item.phone = generatePhoneNumber();
       }
       
-      if (config.includeAddresses) {
+      if (cfg.includeAddresses) {
         item.address = address.street;
         item.city = address.city;
         item.state = address.state;
@@ -228,12 +294,20 @@ const MockDataGenerator = () => {
         item.country = address.country;
       }
       
-      if (config.includeDates) {
+      if (cfg.includeDates) {
         item.dateOfBirth = generateDateOfBirth();
       }
       
-      if (config.includeCreditCards) {
+      if (cfg.includeCreditCards) {
         item.creditCard = generateCreditCard();
+      }
+      
+      if (cfg.includeCPF) {
+        item.cpf = generateCPF();
+      }
+      
+      if (cfg.includeCNPJ) {
+        item.cnpj = generateCNPJ();
       }
       
       data.push(item);
@@ -242,8 +316,8 @@ const MockDataGenerator = () => {
     return data;
   };
 
-  const formatOutput = (data: MockData[]): string => {
-    switch (config.format) {
+  const formatOutput = (data: MockData[], cfg: MockDataConfig = config): string => {
+    switch (cfg.format) {
       case 'json':
         return JSON.stringify(data, null, 2);
       case 'csv':
@@ -341,7 +415,18 @@ const MockDataGenerator = () => {
   };
 
   const loadPreset = (preset: Partial<MockDataConfig>) => {
-    setConfig(prev => ({ ...prev, ...preset }));
+    setConfig(prev => {
+      const merged = { ...prev, ...preset } as MockDataConfig;
+      // Auto-generate output when a preset is applied
+      const data = generateMockData(merged);
+      const formatted = formatOutput(data, merged);
+      setOutput(formatted);
+      toast({
+        title: "Preset Applied",
+        description: `Generated ${merged.count} records in ${merged.format.toUpperCase()} format`,
+      });
+      return merged;
+    });
   };
 
   return (
@@ -459,11 +544,27 @@ const MockDataGenerator = () => {
                   />
                   <Label htmlFor="include-credit-cards" className="text-sm">Credit Cards</Label>
                 </div>
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="include-cpf"
+                    checked={config.includeCPF}
+                    onCheckedChange={(checked) => setConfig(prev => ({ ...prev, includeCPF: checked }))}
+                  />
+                  <Label htmlFor="include-cpf" className="text-sm">CPF (Brazil)</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="include-cnpj"
+                    checked={config.includeCNPJ}
+                    onCheckedChange={(checked) => setConfig(prev => ({ ...prev, includeCNPJ: checked }))}
+                  />
+                  <Label htmlFor="include-cnpj" className="text-sm">CNPJ (Brazil)</Label>
+                </div>
               </div>
             </div>
 
             <div className="flex gap-2 flex-wrap">
-              <Button onClick={handleGenerate} disabled={!config.includeNames && !config.includeEmails && !config.includeAddresses && !config.includePhones && !config.includeDates && !config.includeIds && !config.includeCreditCards}>
+              <Button onClick={handleGenerate} disabled={!config.includeNames && !config.includeEmails && !config.includeAddresses && !config.includePhones && !config.includeDates && !config.includeIds && !config.includeCreditCards && !config.includeCPF && !config.includeCNPJ}>
                 <Users className="h-4 w-4 mr-2" /> Generate Data
               </Button>
               <Button variant="outline" onClick={clearAll}>
@@ -635,6 +736,46 @@ const MockDataGenerator = () => {
                 </Button>
               </div>
             </div>
+
+            {/* Brazilian Data */}
+            <div className="space-y-3">
+              <Label className="text-sm font-medium text-primary">Brazilian Data</Label>
+              <div className="space-y-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full justify-start text-left h-auto p-3"
+                  onClick={() => loadPreset({ count: 20, includeNames: true, includeEmails: true, includePhones: true, includeCPF: true, includeIds: true, format: 'json' })}
+                >
+                  <div>
+                    <div className="font-medium">Brazilian Individuals</div>
+                    <div className="text-xs text-muted-foreground">With CPF numbers</div>
+                  </div>
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full justify-start text-left h-auto p-3"
+                  onClick={() => loadPreset({ count: 15, includeNames: true, includeEmails: true, includePhones: true, includeAddresses: true, includeCNPJ: true, includeIds: true, format: 'json' })}
+                >
+                  <div>
+                    <div className="font-medium">Brazilian Companies</div>
+                    <div className="text-xs text-muted-foreground">With CNPJ numbers</div>
+                  </div>
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full justify-start text-left h-auto p-3"
+                  onClick={() => loadPreset({ count: 25, includeNames: true, includeEmails: true, includePhones: true, includeAddresses: true, includeCPF: true, includeCNPJ: true, includeIds: true, format: 'csv' })}
+                >
+                  <div>
+                    <div className="font-medium">Mixed Brazilian Data</div>
+                    <div className="text-xs text-muted-foreground">CPF and CNPJ</div>
+                  </div>
+                </Button>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -658,6 +799,8 @@ const MockDataGenerator = () => {
                 <li>• <strong>Addresses:</strong> Street, city, state, zip, country</li>
                 <li>• <strong>Dates:</strong> Birth dates (1950-2005)</li>
                 <li>• <strong>Credit Cards:</strong> Various card types with numbers</li>
+                <li>• <strong>CPF:</strong> Valid Brazilian individual tax ID numbers</li>
+                <li>• <strong>CNPJ:</strong> Valid Brazilian company tax ID numbers</li>
               </ul>
             </div>
             
