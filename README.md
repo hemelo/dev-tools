@@ -2,6 +2,13 @@
 
 > **Essential Developer Tools Collection** - A comprehensive suite of web-based utilities for modern developers
 
+## 🌐 **Language / Idioma**
+
+- 🇺🇸 [English](README.md) - Current version
+- 🇧🇷 [Português (Brasil)](README-pt-BR.md) - Portuguese version
+
+---
+
 ## 📋 **Situation (Context)**
 
 ### The Problem
@@ -200,7 +207,6 @@ This project is open source and available under the [MIT License](LICENSE).
 - Vibecoded with [Cursor](https://cursor.com) IDE
 - UI components from [shadcn/ui](https://ui.shadcn.com)
 - Icons from [Lucide](https://lucide.dev)
-- QR Code generation by [react-qr-code](https://www.npmjs.com/package/react-qr-code)
 - Powered by [Vite](https://vitejs.dev) and [React](https://react.dev)
 
 ---
