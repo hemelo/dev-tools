@@ -239,7 +239,7 @@ Built a modern, performant web application using:
 
 ```bash
 # Clone the repository
-git clone <YOUR_GIT_URL>
+git clone https://github.com/hemelo/dev-tools.git
 cd dev-tools
 
 # Install dependencies
